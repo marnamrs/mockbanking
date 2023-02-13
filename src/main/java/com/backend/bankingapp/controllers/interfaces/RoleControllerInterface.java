@@ -1,7 +1,7 @@
-package com.ironhack.demosecurityjwt.controllers.interfaces;
+package com.backend.bankingapp.controllers.interfaces;
 
-import com.ironhack.demosecurityjwt.dtos.RoleToUserDTO;
-import com.ironhack.demosecurityjwt.models.Role;
+import com.backend.bankingapp.dtos.RoleToUserDTO;
+import com.backend.bankingapp.models.Role;
 
 public interface RoleControllerInterface {
     /**

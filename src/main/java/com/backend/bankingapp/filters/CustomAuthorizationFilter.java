@@ -1,4 +1,4 @@
-package com.ironhack.demosecurityjwt.filters;
+package com.backend.bankingapp.filters;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

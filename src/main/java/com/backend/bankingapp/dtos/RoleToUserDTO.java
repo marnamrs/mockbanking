@@ -1,4 +1,4 @@
-package com.ironhack.demosecurityjwt.dtos;
+package com.backend.bankingapp.dtos;
 
 import lombok.Data;
 

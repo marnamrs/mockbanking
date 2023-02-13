@@ -1,7 +1,7 @@
-package com.ironhack.demosecurityjwt.security;
+package com.backend.bankingapp.security;
 
-import com.ironhack.demosecurityjwt.filters.CustomAuthenticationFilter;
-import com.ironhack.demosecurityjwt.filters.CustomAuthorizationFilter;
+import com.backend.bankingapp.filters.CustomAuthenticationFilter;
+import com.backend.bankingapp.filters.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

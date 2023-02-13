@@ -1,4 +1,4 @@
-package com.ironhack.demosecurityjwt.models;
+package com.backend.bankingapp.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,6 +1,6 @@
-package com.ironhack.demosecurityjwt.controllers.interfaces;
+package com.backend.bankingapp.controllers.interfaces;
 
-import com.ironhack.demosecurityjwt.models.User;
+import com.backend.bankingapp.models.User;
 
 import java.util.List;
 

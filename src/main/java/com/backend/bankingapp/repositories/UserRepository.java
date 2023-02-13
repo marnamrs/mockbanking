@@ -1,6 +1,6 @@
-package com.ironhack.demosecurityjwt.repositories;
+package com.backend.bankingapp.repositories;
 
-import com.ironhack.demosecurityjwt.models.User;
+import com.backend.bankingapp.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

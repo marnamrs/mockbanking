@@ -6,13 +6,13 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.0.2</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
-    <groupId>com.ironhack</groupId>
-    <artifactId>demo-security-jwt</artifactId>
+    <groupId>com.backend</groupId>
+    <artifactId>bankingapp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>demo-security-jwt</name>
-    <description>Demo project for Spring Boot</description>
+    <name>lab408</name>
+    <description>lab408</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -33,7 +33,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
@@ -53,6 +52,12 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.auth0</groupId>

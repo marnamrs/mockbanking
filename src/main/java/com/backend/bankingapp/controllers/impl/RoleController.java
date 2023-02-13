@@ -1,9 +1,9 @@
-package com.ironhack.demosecurityjwt.controllers.impl;
+package com.backend.bankingapp.controllers.impl;
 
-import com.ironhack.demosecurityjwt.dtos.RoleToUserDTO;
-import com.ironhack.demosecurityjwt.controllers.interfaces.RoleControllerInterface;
-import com.ironhack.demosecurityjwt.models.Role;
-import com.ironhack.demosecurityjwt.services.interfaces.UserServiceInterface;
+import com.backend.bankingapp.dtos.RoleToUserDTO;
+import com.backend.bankingapp.controllers.interfaces.RoleControllerInterface;
+import com.backend.bankingapp.models.Role;
+import com.backend.bankingapp.services.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

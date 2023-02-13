@@ -1,10 +1,9 @@
-package com.ironhack.demosecurityjwt.models;
+package com.backend.bankingapp.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.repository.cdi.Eager;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -2,7 +2,7 @@ package com.backend.bankingapp.controllers.impl;
 
 import com.backend.bankingapp.dtos.RoleToUserDTO;
 import com.backend.bankingapp.controllers.interfaces.RoleControllerInterface;
-import com.backend.bankingapp.models.Role;
+import com.backend.bankingapp.models.users.Role;
 import com.backend.bankingapp.services.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

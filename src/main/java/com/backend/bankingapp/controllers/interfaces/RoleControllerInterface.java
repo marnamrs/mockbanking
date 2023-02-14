@@ -1,7 +1,7 @@
 package com.backend.bankingapp.controllers.interfaces;
 
 import com.backend.bankingapp.dtos.RoleToUserDTO;
-import com.backend.bankingapp.models.Role;
+import com.backend.bankingapp.models.users.Role;
 
 public interface RoleControllerInterface {
     /**

@@ -1,6 +1,6 @@
 package com.backend.bankingapp.controllers.interfaces;
 
-import com.backend.bankingapp.models.User;
+import com.backend.bankingapp.models.users.User;
 
 import java.util.List;
 

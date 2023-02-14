@@ -1,6 +1,6 @@
 package com.backend.bankingapp.controllers.impl;
 
-import com.backend.bankingapp.models.User;
+import com.backend.bankingapp.models.users.User;
 import com.backend.bankingapp.services.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

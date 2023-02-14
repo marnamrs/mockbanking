@@ -1,4 +1,4 @@
-package com.backend.bankingapp.models;
+package com.backend.bankingapp.models.users;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

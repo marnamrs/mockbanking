@@ -1,7 +1,9 @@
 package com.backend.bankingapp;
 
-import com.backend.bankingapp.models.Role;
-import com.backend.bankingapp.models.User;
+import com.backend.bankingapp.dtos.UserDTO;
+import com.backend.bankingapp.models.users.Admin;
+import com.backend.bankingapp.models.users.Role;
+import com.backend.bankingapp.models.users.User;
 import com.backend.bankingapp.services.impl.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -9,8 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.ArrayList;
 
 @SpringBootApplication
 public class bankingApplication {
@@ -30,9 +30,10 @@ public class bankingApplication {
     CommandLineRunner run(UserService userService) {
         return args -> {
 //            Add new roles and users:
-//            userService.saveRole(new Role(null, "ROLE_foo"));
-//            userService.saveUser(new User(null, "name", "username", "password", new ArrayList<>()));
-//            userService.addRoleToUser("username", "ROLE_foo");
+//            userService.saveRole(new Role(null, "ROLE_ADMIN"));
+//            userService.saveRole(new Role(null, "ROLE_CLIENT"));
+//            userService.saveRole(new Role(null, "ROLE_EXTERNAL"));
+//            userService.createUser(new UserDTO("Admin Admin", "admin", "1234", "ROLE_ADMIN"));
         };
     }
 

@@ -41,25 +41,22 @@ public class UserService implements UserServiceInterface, UserDetailsService {
             throw new UsernameNotFoundException("User not found in the database");
         } else {
             log.info("User found in the database: {}", username);
-            // Create a collection of SimpleGrantedAuthority objects from the user's roles
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-//            user.getRole().forEach(role -> {
-                authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
-//            });
-
+            authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
             return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
         }
     }
 
     @Override
     public User createUser(UserDTO userDTO) throws Exception {
-        User user = null;
+        User user = null;        
         Role role = roleRepository.findByName(userDTO.getRoleName());
-        if(role == null) {
+        if (role == null) {
             throw new RoleNotFoundException("Role not found in the database");
         }
         try {
-            user = saveUser(UserFactory.createUser(userDTO, role));
+           user = UserFactory.createUser(userDTO, role);
+           saveUser(user);
         } catch (Exception e) {
             System.err.println(e);
         }

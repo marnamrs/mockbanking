@@ -13,7 +13,8 @@ public class UserFactory {
     public static User createUser(UserDTO userDTO, Role role) throws Exception {
         switch (role.getName()){
             case "ROLE_ADMIN":
-                return new Admin(userDTO.getName(), userDTO.getUsername(), userDTO.getPassword(), role);
+                Admin admin = new Admin(userDTO.getName(), userDTO.getUsername(), userDTO.getPassword(), role);
+                return admin;
             case "ROLE_CLIENT":
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate birthDate = LocalDate.parse(userDTO.getBirthDateString(), formatter);

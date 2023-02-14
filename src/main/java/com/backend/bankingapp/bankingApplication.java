@@ -33,7 +33,7 @@ public class bankingApplication {
 //            userService.saveRole(new Role(null, "ROLE_ADMIN"));
 //            userService.saveRole(new Role(null, "ROLE_CLIENT"));
 //            userService.saveRole(new Role(null, "ROLE_EXTERNAL"));
-//            userService.createUser(new UserDTO("Admin Admin", "admin", "1234", "ROLE_ADMIN"));
+//            userService.createUser(new UserDTO("Admin", "admin", "1234","ROLE_ADMIN", null, null, null));
         };
     }
 

@@ -5,13 +5,14 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class UserDTO {
     @NotNull
     @NotEmpty
@@ -29,4 +30,11 @@ public class UserDTO {
     private String birthDateString;
     private Address primaryAddress;
     private Address mailingAddress;
+
+//    public UserDTO(String name, String username, String password, String roleName) {
+//    setName(name);
+//    setUsername(username);
+//    setPassword(password);
+//    setRoleName(roleName);
+//    }
 }

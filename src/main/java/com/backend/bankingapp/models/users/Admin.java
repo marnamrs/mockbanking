@@ -14,6 +14,10 @@ import java.util.Collection;
 @NoArgsConstructor
 public class Admin extends User {
     public Admin(String name, String username, String password, Role role) {
+    setName(name);
+    setUsername(username);
+    setPassword(password);
+    setRole(role);
     }
 
 

@@ -2,6 +2,7 @@ package com.backend.bankingapp.services.impl;
 
 import com.backend.bankingapp.dtos.UserDTO;
 import com.backend.bankingapp.models.users.*;
+import com.backend.bankingapp.models.utils.UserFactory;
 import com.backend.bankingapp.repositories.RoleRepository;
 import com.backend.bankingapp.repositories.UserRepository;
 import com.backend.bankingapp.services.interfaces.UserServiceInterface;

@@ -33,6 +33,11 @@ public abstract class User {
         setRole(role);
     }
 
+    public User(String name, Role role) {
+        setName(name);
+        setRole(role);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

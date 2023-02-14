@@ -1,6 +1,6 @@
 package com.backend.bankingapp.dtos;
 
-import com.backend.bankingapp.models.users.Address;
+import com.backend.bankingapp.models.utils.Address;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -28,13 +28,8 @@ public class UserDTO {
     @NotEmpty
     private String roleName;
     private String birthDateString;
+    //TODO see how to handle Address in UserDTO
     private Address primaryAddress;
     private Address mailingAddress;
 
-//    public UserDTO(String name, String username, String password, String roleName) {
-//    setName(name);
-//    setUsername(username);
-//    setPassword(password);
-//    setRoleName(roleName);
-//    }
 }

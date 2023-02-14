@@ -1,4 +1,4 @@
-package com.backend.bankingapp.models.users;
+package com.backend.bankingapp.models.utils;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;

@@ -1,6 +1,6 @@
 package com.backend.bankingapp.models.users;
 
-import jakarta.persistence.Embedded;
+import com.backend.bankingapp.models.utils.Address;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotEmpty;
@@ -25,6 +25,7 @@ public class AccountHolder extends User{
     private Address primaryAddress;
     @ManyToOne
     private Address mailingAddress;
+    //TODO add List<Account> to AccountHolder
     //private List<Account>;
 
     public AccountHolder(String name, String username, String password, Role role, LocalDate birthDate, Address primaryAddress, Address mailingAddress) {
@@ -33,4 +34,6 @@ public class AccountHolder extends User{
         setPrimaryAddress(primaryAddress);
         setMailingAddress(mailingAddress);
     }
+    //TODO add transfer method
+    //TODO check balance by client
 }

@@ -1,8 +1,7 @@
 package com.backend.bankingapp.models.users;
 
 import com.backend.bankingapp.models.utils.Address;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -18,16 +17,28 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountHolder extends User{
-    @NotNull
-    @NotEmpty
     private LocalDate birthDate;
-    @ManyToOne
+    @Embedded
     private Address primaryAddress;
-    @ManyToOne
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="country", column = @Column(name = "mailing_country")),
+            @AttributeOverride(name="city", column = @Column(name = "mailing_city")),
+            @AttributeOverride(name="street", column = @Column(name = "mailing_street")),
+            @AttributeOverride(name="streetNum", column = @Column(name = "mailing_street_num")),
+            @AttributeOverride(name="zipCode", column = @Column(name = "mailing_zip_code"))
+    })
     private Address mailingAddress;
     //TODO add List<Account> to AccountHolder
     //private List<Account>;
 
+    //single address
+    public AccountHolder(String name, String username, String password, Role role, LocalDate birthDate, Address primaryAddress) {
+        super(name, username, password, role);
+        setBirthDate(birthDate);
+        setPrimaryAddress(primaryAddress);
+    }
+    //primary and secondary address
     public AccountHolder(String name, String username, String password, Role role, LocalDate birthDate, Address primaryAddress, Address mailingAddress) {
         super(name, username, password, role);
         setBirthDate(birthDate);

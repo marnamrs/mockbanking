@@ -29,11 +29,15 @@ public class bankingApplication {
     @Bean
     CommandLineRunner run(UserService userService) {
         return args -> {
-//            Add new roles and users:
+//            Add roles:
             userService.saveRole(new Role(null, "ROLE_ADMIN"));
             userService.saveRole(new Role(null, "ROLE_CLIENT"));
             userService.saveRole(new Role(null, "ROLE_EXTERNAL"));
-            userService.createUser(new UserDTO("Admin", "admin", "1234","ROLE_ADMIN", null, null, null));
+//            Add admin:
+            userService.createUser(new UserDTO("Admin", "admin", "1234","ROLE_ADMIN"));
+//            Add accountHolder:
+            userService.createUser(new UserDTO("User", "user", "1234", "ROLE_CLIENT", "01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, null, null, null, 0, 0));
+            userService.createUser(new UserDTO("User", "user", "1234", "ROLE_CLIENT", "01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, "Spain", "Madrid", "Street", 99, 90009));
         };
     }
 

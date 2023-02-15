@@ -15,18 +15,27 @@ import java.time.format.DateTimeFormatter;
 
 public class UserFactory {
     public static User createUser(UserDTO userDTO, Role role) throws Exception {
-        switch (role.getName()){
-            case "ROLE_ADMIN":
-                Admin admin = new Admin(userDTO.getName(), userDTO.getUsername(), userDTO.getPassword(), role);
-                return admin;
-            case "ROLE_CLIENT":
-                //TODO test add new AccountHolder and fix
+        switch (role.getName()) {
+            case "ROLE_ADMIN" -> {
+                return new Admin(userDTO.getName(), userDTO.getUsername(), userDTO.getPassword(), role);
+            }
+            case "ROLE_CLIENT" -> {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate birthDate = LocalDate.parse(userDTO.getBirthDateString(), formatter);
-                return new AccountHolder(userDTO.getName(), userDTO.getUsername(), userDTO.getPassword(), role, birthDate, userDTO.getPrimaryAddress(), userDTO.getMailingAddress());
+                Address primary = new Address(userDTO.getPrimaryCountry(), userDTO.getPrimaryCity(), userDTO.getPrimaryStreet(), userDTO.getPrimaryStreetNum(), userDTO.getPrimaryZipCode());
+                if (userDTO.getMailingCountry() != null) {
+                    //is providing primary and secondary address
+                    Address secondary = new Address(userDTO.getMailingCountry(), userDTO.getMailingCity(), userDTO.getMailingStreet(), userDTO.getMailingStreetNum(), userDTO.getMailingZipCode());
+                    return new AccountHolder(userDTO.getName(), userDTO.getUsername(), userDTO.getPassword(), role, birthDate, primary, secondary);
+                } else {
+                    //provides only primary address
+                    return new AccountHolder(userDTO.getName(), userDTO.getUsername(), userDTO.getPassword(), role, birthDate, primary);
+
+                }
+            }
+
             //TODO add option for ROLE_EXTERNAL user creation
-                default:
-                throw new Exception("Error creating User.");
+            default -> throw new Exception("Error creating User.");
         }
     }
 }

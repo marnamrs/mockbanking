@@ -59,7 +59,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
            user = UserFactory.createUser(userDTO, role);
            saveUser(user);
         } catch (Exception e) {
-            System.err.println(e);
+            throw new Exception(e);
         }
         return user;
     }

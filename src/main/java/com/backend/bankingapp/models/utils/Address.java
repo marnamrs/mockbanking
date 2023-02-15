@@ -3,31 +3,34 @@ package com.backend.bankingapp.models.utils;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@Embeddable
 public class Address {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @NotNull
-    @NotEmpty
+
     private String country;
-    @NotNull
-    @NotEmpty
     private String city;
     private String street;
-    private int streetNumber;
-    private int floorNumber;
-    private String apartment;
+    private int streetNum;
     private int zipCode;
 
+    public Address(String country, String city) {
+        setCountry(country);
+        setCity(city);
+    }
 
+    public Address(String country, String city, String street, int streetNum, int zipCode) {
+        setCountry(country);
+        setCity(city);
+        setStreet(street);
+        setStreetNum(streetNum);
+        setZipCode(zipCode);
+    }
 }

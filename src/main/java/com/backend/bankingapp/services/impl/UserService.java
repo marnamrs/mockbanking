@@ -54,18 +54,22 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     @Override
     public User createUser(UserDTO userDTO) {
         log.info("Creating new user {} with role {}", userDTO.getName(), userDTO.getRoleName());
-        User user = null;        
-        Role role = roleRepository.findByName(userDTO.getRoleName());
-        if (role == null) {
+        User user = null;
+        if (roleRepository.findByName(userDTO.getRoleName()).isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Role not found in the database");
         }
+        Role role = roleRepository.findByName(userDTO.getRoleName()).get();
         user = UserFactory.createUser(userDTO, role);
         return saveUser(user);
     }
 
     public User createClient(UserDTO userDTO) {
         log.info("Creating new user {} with role Client", userDTO.getName());
-        User user = UserFactory.createUser(userDTO, roleRepository.findByName("ROLE_CLIENT"));
+        if (roleRepository.findByName("ROLE_CLIENT").isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Role not found in the database");
+        }
+        Role role = roleRepository.findByName("ROLE_CLIENT").get();
+        User user = UserFactory.createUser(userDTO, role);
         return saveUser(user);
     }
 
@@ -85,10 +89,15 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     @Override
     public void addRoleToUser(String username, String roleName) {
         log.info("Adding role {} to user {}", roleName, username);
-        User user = userRepository.findByUsername(username).get();
-        Role role = roleRepository.findByName(roleName);
-        user.setRole(role);
-        userRepository.save(user);
+        if(userRepository.findByUsername(username).isPresent() && roleRepository.findByName(roleName).isPresent()){
+            User user = userRepository.findByUsername(username).get();
+            Role role = roleRepository.findByName(roleName).get();
+            user.setRole(role);
+            userRepository.save(user);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User/Role not found");
+        }
+
     }
     @Override
     public User getUser(String username) {

@@ -1,9 +1,7 @@
 package com.backend.bankingapp;
 
 import com.backend.bankingapp.dtos.UserDTO;
-import com.backend.bankingapp.models.users.Admin;
 import com.backend.bankingapp.models.users.Role;
-import com.backend.bankingapp.models.users.User;
 import com.backend.bankingapp.services.impl.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

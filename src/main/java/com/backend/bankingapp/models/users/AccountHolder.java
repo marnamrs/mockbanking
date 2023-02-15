@@ -1,5 +1,6 @@
 package com.backend.bankingapp.models.users;
 
+import com.backend.bankingapp.models.accounts.Account;
 import com.backend.bankingapp.models.utils.Address;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -10,6 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,8 +32,9 @@ public class AccountHolder extends User{
             @AttributeOverride(name="zipCode", column = @Column(name = "mailing_zip_code"))
     })
     private Address mailingAddress;
-    //TODO add List<Account> to AccountHolder
-    //private List<Account>;
+
+    @OneToMany(mappedBy = "primaryOwner")
+    private List<Account> accounts = new ArrayList<>();
 
     //single address
     public AccountHolder(String name, String username, String password, Role role, LocalDate birthDate, Address primaryAddress) {

@@ -1,6 +1,8 @@
 package com.backend.bankingapp.models.utils;
 
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -9,11 +11,13 @@ import java.util.Currency;
 
 @Getter
 @Setter
+@Embeddable
+@NoArgsConstructor
 public class Money {
     private static final Currency USD = Currency.getInstance("USD");
     private static final RoundingMode DEFAULT_ROUNDING = RoundingMode.HALF_EVEN;
 
-    private final Currency currency;
+    private Currency currency;
     private BigDecimal amount;
 
 

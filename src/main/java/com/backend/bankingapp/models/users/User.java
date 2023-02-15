@@ -6,8 +6,6 @@ import org.hibernate.Hibernate;
 
 import java.util.Objects;
 
-import static jakarta.persistence.FetchType.EAGER;
-
 @Entity
 @Getter
 @Setter
@@ -15,14 +13,12 @@ import static jakarta.persistence.FetchType.EAGER;
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String username;
     private String password;
-    // user roles
     @ManyToOne
     private Role role;
 

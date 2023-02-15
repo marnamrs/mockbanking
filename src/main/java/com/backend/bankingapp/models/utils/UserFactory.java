@@ -2,13 +2,9 @@ package com.backend.bankingapp.models.utils;
 
 import com.backend.bankingapp.dtos.UserDTO;
 import com.backend.bankingapp.models.users.*;
-import com.backend.bankingapp.repositories.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.management.relation.RoleNotFoundException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -32,8 +28,7 @@ public class UserFactory {
                 }
             }
             case "ROLE_EXTERNAL" -> {
-                ThirdParty user = new ThirdParty(userDTO.getName(), role);
-                return user;
+                return new ThirdParty(userDTO.getName(), role);
             }
             default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error creating User.");
         }

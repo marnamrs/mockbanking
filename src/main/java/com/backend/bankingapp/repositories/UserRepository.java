@@ -4,6 +4,8 @@ import com.backend.bankingapp.models.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * The UserRepository interface extends JpaRepository to allow for CRUD operations
  * on User entities in the database.
@@ -16,5 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param username The username of the User entity to search for
      * @return The found User entity or null if not found
      */
-    User findByUsername(String username);
+    Optional<User> findByUsername(String username);
+
+    Optional<User> findUserById(Long id);
 }

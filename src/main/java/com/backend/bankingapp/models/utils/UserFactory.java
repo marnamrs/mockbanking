@@ -8,13 +8,15 @@ import com.backend.bankingapp.models.users.User;
 import com.backend.bankingapp.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.management.relation.RoleNotFoundException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class UserFactory {
-    public static User createUser(UserDTO userDTO, Role role) throws Exception {
+    public static User createUser(UserDTO userDTO, Role role) {
         switch (role.getName()) {
             case "ROLE_ADMIN" -> {
                 return new Admin(userDTO.getName(), userDTO.getUsername(), userDTO.getPassword(), role);
@@ -30,12 +32,10 @@ public class UserFactory {
                 } else {
                     //provides only primary address
                     return new AccountHolder(userDTO.getName(), userDTO.getUsername(), userDTO.getPassword(), role, birthDate, primary);
-
                 }
             }
-
             //TODO add option for ROLE_EXTERNAL user creation
-            default -> throw new Exception("Error creating User.");
+            default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error creating User.");
         }
     }
 }

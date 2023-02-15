@@ -1,5 +1,6 @@
 package com.backend.bankingapp.controllers.impl;
 
+import com.backend.bankingapp.dtos.UserDTO;
 import com.backend.bankingapp.models.users.User;
 import com.backend.bankingapp.services.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,38 +9,40 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * RESTful API for User management
- */
+//REST API for User management
+
 @RestController
 @RequestMapping("/api")
 public class UserController {
 
-    /**
-     * User service for accessing user data
-     */
     @Autowired
     private UserServiceInterface userService;
+    //TODO set access restrictions to userController methods
 
-    /**
-     * Get a list of all users
-     *
-     * @return list of all users
-     */
+    //access available to Admin
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
     public List<User> getUsers() {
         return userService.getUsers();
     }
+    //access available to Admin
+    @GetMapping("/users/id")
+    @ResponseStatus(HttpStatus.OK)
+    public User getUserById(@RequestParam Long id){
+        return userService.getUserById(id);
+    }
 
-    /**
-     * Save a new user
-     *
-     * @param user the user to be saved
-     */
-    @PostMapping("/users")
+    //access available to Admin
+    @PostMapping("/users/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveUser(@RequestBody User user) {
-        userService.saveUser(user);
+    public User createUser(@RequestBody UserDTO userDTO)  {
+        return userService.createUser(userDTO);
+    }
+
+    //access available to everyone (register as new Client)
+    @PostMapping("/client/new")
+    @ResponseStatus(HttpStatus.CREATED)
+    public User createClient(@RequestBody UserDTO userDTO) {
+        return userService.createClient(userDTO);
     }
 }

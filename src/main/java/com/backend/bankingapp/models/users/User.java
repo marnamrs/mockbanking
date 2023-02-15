@@ -26,6 +26,7 @@ public abstract class User {
     @ManyToOne
     private Role role;
 
+    //Admin & AccountHolder
     public User(String name, String username, String password, Role role) {
         setName(name);
         setUsername(username);
@@ -33,6 +34,7 @@ public abstract class User {
         setRole(role);
     }
 
+    //ThirdParty
     public User(String name, Role role) {
         setName(name);
         setRole(role);

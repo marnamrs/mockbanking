@@ -1,10 +1,7 @@
 package com.backend.bankingapp.models.utils;
 
 import com.backend.bankingapp.dtos.UserDTO;
-import com.backend.bankingapp.models.users.AccountHolder;
-import com.backend.bankingapp.models.users.Admin;
-import com.backend.bankingapp.models.users.Role;
-import com.backend.bankingapp.models.users.User;
+import com.backend.bankingapp.models.users.*;
 import com.backend.bankingapp.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
@@ -34,7 +31,10 @@ public class UserFactory {
                     return new AccountHolder(userDTO.getName(), userDTO.getUsername(), userDTO.getPassword(), role, birthDate, primary);
                 }
             }
-            //TODO add option for ROLE_EXTERNAL user creation
+            case "ROLE_EXTERNAL" -> {
+                ThirdParty user = new ThirdParty(userDTO.getName(), role);
+                return user;
+            }
             default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error creating User.");
         }
     }

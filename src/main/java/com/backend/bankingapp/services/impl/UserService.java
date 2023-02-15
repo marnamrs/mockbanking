@@ -54,13 +54,21 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     @Override
     public User createUser(UserDTO userDTO) {
         log.info("Creating new user {} with role {}", userDTO.getName(), userDTO.getRoleName());
-        User user = null;
         if (roleRepository.findByName(userDTO.getRoleName()).isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Role not found in the database");
         }
         Role role = roleRepository.findByName(userDTO.getRoleName()).get();
-        user = UserFactory.createUser(userDTO, role);
-        return saveUser(user);
+        if(role.getName().equals("ROLE_EXTERNAL")){
+            //return thirdParty key before encoding in saveUser method
+            //user should store key for future access
+            ThirdParty user = (ThirdParty) UserFactory.createUser(userDTO, role);
+            //logging key for testing/verification purposes
+            //log.info("Generated key: {}", user.getUserkey());
+            saveUser(user);
+            return user;
+        }else{
+            return saveUser(UserFactory.createUser(userDTO, role));
+        }
     }
 
     public User createClient(UserDTO userDTO) {
@@ -77,6 +85,13 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     public User saveUser(User user) {
         log.info("Saving new user {} to the database", user.getName());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+    //thirdParties require key encoding instead of password encoding
+    public User saveUser(ThirdParty user) {
+        log.info("Saving new user {} to the database", user.getName());
+        user.setUserkey(passwordEncoder.encode(user.getUserkey()));
         return userRepository.save(user);
     }
 

@@ -38,7 +38,8 @@ public class bankingApplication {
 //            Add accountHolder:
             userService.createUser(new UserDTO("User", "user", "1234", "ROLE_CLIENT", "01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, null, null, null, 0, 0));
             userService.createUser(new UserDTO("User", "user", "1234", "ROLE_CLIENT", "01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, "Spain", "Madrid", "Street", 99, 90009));
-
+//            Add thirdParty:
+            userService.createUser(new UserDTO("ThirdParty", "ROLE_EXTERNAL"));
         };
     }
 

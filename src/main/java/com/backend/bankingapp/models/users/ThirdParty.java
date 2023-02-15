@@ -6,33 +6,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.security.NoSuchAlgorithmException;
-import java.util.Objects;
-
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 public class ThirdParty extends User {
-    private String key;
+    private String userkey;
 
     public ThirdParty(String name, Role role){
         super(name, role);
-        //TODO check way to handle exception outside constructor
-        try {
-            setKey(name);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        setKey();
     }
-    public void setKey(String input) throws NoSuchAlgorithmException {
-        String hash = null;
-        try {
-            hash = HashCreator.createSHAHash(input);
-        } catch(Exception e) {
-            System.err.println(e);
-        }
-        key = hash;
+
+    public void setKey() {
+        //generates 8-byte key to be stored by User for future access
+        //encrypted key will be stored in DB
+        this.userkey = HashCreator.createKey();
     }
 
 }

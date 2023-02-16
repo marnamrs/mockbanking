@@ -14,7 +14,6 @@ public interface UserServiceInterface {
 
     User saveUser(User user);
     User saveUser(ThirdParty user);
-
     Role saveRole(Role role);
     void addRoleToUser(String username, String roleName);
     User getUser(String username);
@@ -23,5 +22,7 @@ public interface UserServiceInterface {
     //Transform userDTO into User
     User createUser(UserDTO userDTO);
     User createClient(UserDTO userDTO);
+
+    //TODO add profile services (Admin, AccountHolder, ThirdParty)
 }
 

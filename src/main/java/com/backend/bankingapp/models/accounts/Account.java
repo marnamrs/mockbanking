@@ -26,17 +26,16 @@ public abstract class Account {
     private long id;
     @Embedded
     private Money balance;
-    //TODO check how to map ManyToMany primary&secondary owner
-//    @ManyToMany
-//    private AccountHolder primaryOwner;
-//    @ManyToMany
-//    private AccountHolder secondaryOwner;
-    @ManyToMany
-    private List<AccountHolder> owners = new ArrayList<>();
+    @ManyToOne
+    private AccountHolder primaryOwner;
+    @ManyToOne
+    private AccountHolder secondaryOwner;
     private Money penaltyFee;
     private LocalDate creationDate;
     private LocalDate lastAccessDate;
-    //TODO add List<Transaction>
+
+    //OneToMany <--- transfers
+    //TODO add List<Transaction> x2 (received and sent)
 
     public Account(Money balance){
         setBalance(balance);
@@ -57,9 +56,13 @@ public abstract class Account {
         creationDate = LocalDate.now(zone);
     }
     public void setLastAccessDate(LocalDate date){
-        //override default set if date needs to be manually set
+        //override: set given date
         this.lastAccessDate = date;
     }
+
+    //subclasses need to define update method for fees and interests
+    //update() gets called for each accountHolder.getBalance()
+    public abstract void update();
 
     @Override
     public boolean equals(Object o) {
@@ -72,4 +75,6 @@ public abstract class Account {
     public int hashCode() {
         return Objects.hash(getId());
     }
+
+
 }

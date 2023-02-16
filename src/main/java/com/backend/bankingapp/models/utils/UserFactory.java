@@ -19,7 +19,7 @@ public class UserFactory {
                 LocalDate birthDate = LocalDate.parse(userDTO.getBirthDateString(), formatter);
                 Address primary = new Address(userDTO.getPrimaryCountry(), userDTO.getPrimaryCity(), userDTO.getPrimaryStreet(), userDTO.getPrimaryStreetNum(), userDTO.getPrimaryZipCode());
                 if (userDTO.getMailingCountry() != null) {
-                    //is providing primary and secondary address
+                    //provides primary and secondary address
                     Address secondary = new Address(userDTO.getMailingCountry(), userDTO.getMailingCity(), userDTO.getMailingStreet(), userDTO.getMailingStreetNum(), userDTO.getMailingZipCode());
                     return new AccountHolder(userDTO.getName(), userDTO.getUsername(), userDTO.getPassword(), role, birthDate, primary, secondary);
                 } else {

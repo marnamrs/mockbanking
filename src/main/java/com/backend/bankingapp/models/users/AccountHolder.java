@@ -2,14 +2,14 @@ package com.backend.bankingapp.models.users;
 
 import com.backend.bankingapp.models.accounts.Account;
 import com.backend.bankingapp.models.utils.Address;
+import com.backend.bankingapp.models.utils.Money;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +33,10 @@ public class AccountHolder extends User{
     })
     private Address mailingAddress;
 
-    @ManyToMany(mappedBy = "owners")
-    private List<Account> accounts = new ArrayList<>();
+    @OneToMany(mappedBy = "primaryOwner")
+    private List<Account> primaryAccounts = new ArrayList<>();
+    @OneToMany(mappedBy = "secondaryOwner")
+    private List<Account> secondaryAccounts = new ArrayList<>();
 
     //single address
     public AccountHolder(String name, String username, String password, Role role, LocalDate birthDate, Address primaryAddress) {
@@ -49,6 +51,20 @@ public class AccountHolder extends User{
         setPrimaryAddress(primaryAddress);
         setMailingAddress(mailingAddress);
     }
+
     //TODO add transfer method
     //TODO check balance by client
+
+    //TODO move getBalance() to service
+//    public BigDecimal getBalance(){
+//        //get global balance of all accounts
+//        Money sum = new Money(new BigDecimal("0"));
+//        for(Account a : accounts){
+//            //apply pending fees and interests
+//            a.update();
+//            //add account balance to sum
+//            sum.increaseAmount(a.getBalance());
+//        }
+//        return sum.getAmount();
+//    }
 }

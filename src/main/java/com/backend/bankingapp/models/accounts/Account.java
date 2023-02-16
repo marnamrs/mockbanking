@@ -25,11 +25,20 @@ public abstract class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="currency", column = @Column(name = "balance_currency")),
+            @AttributeOverride(name="amount", column = @Column(name = "balance_amount")),
+    })
     private Money balance;
     @ManyToOne
     private AccountHolder primaryOwner;
     @ManyToOne
     private AccountHolder secondaryOwner;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="currency", column = @Column(name = "penalty_fee_currency")),
+            @AttributeOverride(name="amount", column = @Column(name = "penalty_fee_amount")),
+    })
     private Money penaltyFee;
     private LocalDate creationDate;
     private LocalDate lastAccessDate;

@@ -35,19 +35,19 @@ public abstract class Account {
     private AccountHolder primaryOwner;
     @ManyToOne
     private AccountHolder secondaryOwner;
+    @OneToMany(mappedBy = "originator")
+    private List<Transaction> expenseTransactions;
+    @OneToMany(mappedBy = "beneficiary")
+    private List<Transaction> incomeTransactions;
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name="currency", column = @Column(name = "penalty_fee_currency")),
             @AttributeOverride(name="amount", column = @Column(name = "penalty_fee_amount")),
     })
-//    private List<Transaction> expenseTransactions;
-//    private List<Transaction> incomeTransactions;
     private Money penaltyFee;
     private LocalDate creationDate;
     private LocalDate lastAccessDate;
 
-    //OneToMany <--- transfers
-    //TODO add List<Transaction> x2 (received and sent)
 
     public Account(Money balance){
         setBalance(balance);

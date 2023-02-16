@@ -9,6 +9,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +46,8 @@ public abstract class Account {
             @AttributeOverride(name="amount", column = @Column(name = "penalty_fee_amount")),
     })
     private Money penaltyFee;
-    private LocalDate creationDate;
-    private LocalDate lastAccessDate;
+    private LocalDateTime creationDate;
+    private LocalDateTime lastAccessDate;
 
 
     public Account(Money balance){
@@ -60,14 +61,14 @@ public abstract class Account {
     public void setCreationDate(){
         //default: set according to CET timezone
         ZoneId zone = ZoneId.of("Europe/Madrid");
-        creationDate = LocalDate.now(zone);
+        creationDate = LocalDateTime.now(zone);
     }
     public void setLastAccessDate(){
         //default: set according to CET timezone
         ZoneId zone = ZoneId.of("Europe/Madrid");
-        creationDate = LocalDate.now(zone);
+        creationDate = LocalDateTime.now(zone);
     }
-    public void setLastAccessDate(LocalDate date){
+    public void setLastAccessDate(LocalDateTime date){
         //override: set given date
         this.lastAccessDate = date;
     }

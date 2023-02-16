@@ -6,7 +6,7 @@ import com.backend.bankingapp.models.users.User;
 import java.util.List;
 
 
-public interface UserControllerInterface {
+public interface AdminControllerInterface {
     List<User> getUsers();
     User getUserById(Long id);
     User createUser(UserDTO userDTO);

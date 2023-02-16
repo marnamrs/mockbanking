@@ -1,27 +1,29 @@
 package com.backend.bankingapp.services.interfaces;
 
 import com.backend.bankingapp.dtos.UserDTO;
-import com.backend.bankingapp.models.users.Admin;
 import com.backend.bankingapp.models.users.Role;
 import com.backend.bankingapp.models.users.ThirdParty;
 import com.backend.bankingapp.models.users.User;
 
-import javax.management.relation.RoleNotFoundException;
 import java.util.List;
 
 
-public interface UserServiceInterface {
+public interface AdminServiceInterface {
 
+    //Post: Users
+    User createUser(UserDTO userDTO);
+    User createClient(UserDTO userDTO);
     User saveUser(User user);
     User saveUser(ThirdParty user);
+
+    //Post: Roles
     Role saveRole(Role role);
     void addRoleToUser(String username, String roleName);
+
+    //Get: Users
     User getUser(String username);
     User getUserById(Long id);
     List<User> getUsers();
-    //Transform userDTO into User
-    User createUser(UserDTO userDTO);
-    User createClient(UserDTO userDTO);
 
     //TODO add profile services (Admin, AccountHolder, ThirdParty)
 }

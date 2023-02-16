@@ -2,7 +2,7 @@ package com.backend.bankingapp;
 
 import com.backend.bankingapp.dtos.UserDTO;
 import com.backend.bankingapp.models.users.Role;
-import com.backend.bankingapp.services.impl.UserService;
+import com.backend.bankingapp.services.impl.AdminService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,19 +25,19 @@ public class bankingApplication {
     }
 
     @Bean
-    CommandLineRunner run(UserService userService) {
+    CommandLineRunner run(AdminService adminService) {
         return args -> {
 //            Add roles:
-            userService.saveRole(new Role(null, "ROLE_ADMIN"));
-            userService.saveRole(new Role(null, "ROLE_CLIENT"));
-            userService.saveRole(new Role(null, "ROLE_EXTERNAL"));
+            adminService.saveRole(new Role(null, "ROLE_ADMIN"));
+            adminService.saveRole(new Role(null, "ROLE_CLIENT"));
+            adminService.saveRole(new Role(null, "ROLE_EXTERNAL"));
 //            Add admin:
-            userService.createUser(new UserDTO("Admin", "admin", "1234","ROLE_ADMIN"));
+            adminService.createUser(new UserDTO("Admin", "admin", "1234","ROLE_ADMIN"));
 //            Add accountHolder:
-            userService.createUser(new UserDTO("User", "user", "1234", "ROLE_CLIENT", "01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, null, null, null, 0, 0));
-            userService.createUser(new UserDTO("User", "user", "1234", "ROLE_CLIENT", "01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, "Spain", "Madrid", "Street", 99, 90009));
+            adminService.createUser(new UserDTO("User", "user1", "1234", "ROLE_CLIENT", "01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, null, null, null, 0, 0));
+            adminService.createUser(new UserDTO("User", "user2", "1234", "ROLE_CLIENT", "01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, "Spain", "Madrid", "Street", 99, 90009));
 //            Add thirdParty:
-            userService.createUser(new UserDTO("ThirdParty", "ROLE_EXTERNAL"));
+            adminService.createUser(new UserDTO("ThirdParty", "ROLE_EXTERNAL"));
         };
     }
 

@@ -2,7 +2,7 @@ package com.backend.bankingapp.controllers.impl;
 
 import com.backend.bankingapp.dtos.UserDTO;
 import com.backend.bankingapp.models.users.User;
-import com.backend.bankingapp.services.interfaces.UserServiceInterface;
+import com.backend.bankingapp.services.interfaces.AdminServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,36 +13,35 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class UserController {
+public class AdminController {
 
     @Autowired
-    private UserServiceInterface userService;
-    //TODO set access restrictions to userController methods
+    private AdminServiceInterface adminService;
 
-    //access available to Admin
-    @GetMapping("/users")
+
+    @GetMapping("/adm/users")
     @ResponseStatus(HttpStatus.OK)
     public List<User> getUsers() {
-        return userService.getUsers();
+        return adminService.getUsers();
     }
-    //access available to Admin
-    @GetMapping("/users/id")
+
+    @GetMapping("/adm/users/id")
     @ResponseStatus(HttpStatus.OK)
     public User getUserById(@RequestParam Long id){
-        return userService.getUserById(id);
+        return adminService.getUserById(id);
     }
 
-    //access available to Admin
-    @PostMapping("/users/add")
+    @PostMapping("/adm/users/add")
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody UserDTO userDTO)  {
-        return userService.createUser(userDTO);
+        return adminService.createUser(userDTO);
     }
 
-    //access available to everyone (register as new Client)
-    @PostMapping("/client/new")
-    @ResponseStatus(HttpStatus.CREATED)
-    public User createClient(@RequestBody UserDTO userDTO) {
-        return userService.createClient(userDTO);
-    }
+    //TODO add admin POST new accounts
+    //TODO add admin POST add client to account
+    //TODO add admin GET accounts
+    //TODO add admin GET balance by client || account
+    //TODO add admin POST balance to account
+
+
 }

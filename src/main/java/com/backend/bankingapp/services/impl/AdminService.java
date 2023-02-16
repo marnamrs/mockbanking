@@ -5,7 +5,7 @@ import com.backend.bankingapp.models.users.*;
 import com.backend.bankingapp.models.utils.UserFactory;
 import com.backend.bankingapp.repositories.RoleRepository;
 import com.backend.bankingapp.repositories.UserRepository;
-import com.backend.bankingapp.services.interfaces.UserServiceInterface;
+import com.backend.bankingapp.services.interfaces.AdminServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserService implements UserServiceInterface, UserDetailsService {
+public class AdminService implements AdminServiceInterface, UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;

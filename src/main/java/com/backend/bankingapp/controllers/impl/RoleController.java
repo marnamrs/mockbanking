@@ -3,7 +3,7 @@ package com.backend.bankingapp.controllers.impl;
 import com.backend.bankingapp.dtos.RoleToUserDTO;
 import com.backend.bankingapp.controllers.interfaces.RoleControllerInterface;
 import com.backend.bankingapp.models.users.Role;
-import com.backend.bankingapp.services.interfaces.UserServiceInterface;
+import com.backend.bankingapp.services.interfaces.AdminServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class RoleController implements RoleControllerInterface {
      * User service for accessing user data
      */
     @Autowired
-    private UserServiceInterface userService;
+    private AdminServiceInterface userService;
 
     /**
      * Save a new role

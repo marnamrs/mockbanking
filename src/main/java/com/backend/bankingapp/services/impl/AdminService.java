@@ -4,6 +4,7 @@ import com.backend.bankingapp.dtos.UserDTO;
 import com.backend.bankingapp.models.users.*;
 import com.backend.bankingapp.models.utils.UserFactory;
 import com.backend.bankingapp.repositories.RoleRepository;
+import com.backend.bankingapp.repositories.ThirdPartyRepository;
 import com.backend.bankingapp.repositories.UserRepository;
 import com.backend.bankingapp.services.interfaces.AdminServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,8 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ThirdPartyRepository thirdPartyRepository;
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
@@ -56,17 +59,7 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Role not found in the database");
         }
         Role role = roleRepository.findByName(userDTO.getRoleName()).get();
-        if(role.getName().equals("ROLE_EXTERNAL")){
-            //return thirdParty key before encoding in saveUser method
-            //user should store key for future access
-            ThirdParty user = (ThirdParty) UserFactory.createUser(userDTO, role);
-            //logging key for testing/verification purposes
-            //log.info("Generated key: {}", user.getUserkey());
-            saveUser(user);
-            return user;
-        }else{
-            return saveUser(UserFactory.createUser(userDTO, role));
-        }
+        return saveUser(UserFactory.createUser(userDTO, role));
     }
 
     public User createClient(UserDTO userDTO) {
@@ -79,6 +72,15 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
         return saveUser(user);
     }
 
+    public ThirdParty createExternal(String name){
+        log.info("Creating access for external party {}.", name);
+        Role role = roleRepository.findByName("ROLE_EXTERNAL").get();
+        ThirdParty user = UserFactory.createExternal(name, role);
+        //logging key for testing/verification purposes
+        log.info("Generated key for user {}: {}", user.getName(), user.getAccessKey());
+        return saveExternal(user);
+    }
+
     @Override
     public User saveUser(User user) {
         log.info("Saving new user {} to the database", user.getName());
@@ -86,11 +88,10 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
         return userRepository.save(user);
     }
 
-    //thirdParties require key encoding instead of password encoding
-    public User saveUser(ThirdParty user) {
+    public ThirdParty saveExternal(ThirdParty user) {
         log.info("Saving new user {} to the database", user.getName());
-        user.setUserkey(passwordEncoder.encode(user.getUserkey()));
-        return userRepository.save(user);
+        user.setAccessKey(passwordEncoder.encode(user.getAccessKey()));
+        return thirdPartyRepository.save(user);
     }
 
     @Override
@@ -134,5 +135,20 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
     public List<User> getUsers() {
         log.info("Fetching all users");
         return userRepository.findAll();
+    }
+
+    @Override
+    public ThirdParty getExternalById(Long id) {
+        log.info("Fetching external {}", id);
+        if(thirdPartyRepository.findById(id).isPresent()){
+            return thirdPartyRepository.findById(id).get();
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "External party not found");
+    }
+
+    @Override
+    public List<ThirdParty> getExternals() {
+        log.info("Fetching all third parties.");
+        return thirdPartyRepository.findAll();
     }
 }

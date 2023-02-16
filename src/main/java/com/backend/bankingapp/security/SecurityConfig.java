@@ -78,10 +78,12 @@ public class SecurityConfig {
         // set up authorization for different request matchers and user roles
         http.authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/api/login/**").permitAll()
-                .requestMatchers("/api/adm/**").hasAuthority("ROLE_ADMIN")
+                .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
 //                uncomment to allow free registry as new client:
 //                .requestMatchers(POST, "/api/client/new").permitAll()
                 .requestMatchers("/api/client/**").hasAuthority("ROLE_CLIENT")
+                //operations secured via required access key
+                .requestMatchers("/api/external/**").permitAll()
                 .anyRequest().authenticated()
         );
         // add the custom authentication filter to the http security object

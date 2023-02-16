@@ -3,6 +3,7 @@ package com.backend.bankingapp.models.accounts;
 import com.backend.bankingapp.models.users.AccountHolder;
 import com.backend.bankingapp.models.users.User;
 import com.backend.bankingapp.models.utils.Money;
+import com.backend.bankingapp.models.utils.Transaction;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -39,6 +40,8 @@ public abstract class Account {
             @AttributeOverride(name="currency", column = @Column(name = "penalty_fee_currency")),
             @AttributeOverride(name="amount", column = @Column(name = "penalty_fee_amount")),
     })
+//    private List<Transaction> expenseTransactions;
+//    private List<Transaction> incomeTransactions;
     private Money penaltyFee;
     private LocalDate creationDate;
     private LocalDate lastAccessDate;
@@ -70,7 +73,7 @@ public abstract class Account {
     }
 
     //subclasses need to define update method for fees and interests
-    //update() gets called for each accountHolder.getBalance()
+    //TODO update() gets called for each getBalance
     public abstract void update();
 
     @Override

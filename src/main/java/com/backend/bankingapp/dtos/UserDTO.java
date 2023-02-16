@@ -15,6 +15,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class UserDTO {
+    //Admin & AccountHolder profiles
+
     @NotNull
     @NotEmpty
     private String name;
@@ -52,7 +54,6 @@ public class UserDTO {
     @Positive
     private int mailingZipCode;
 
-    //Admin & AccountHolder profiles
     public UserDTO(String name, String username, String password, String roleName) {
         setName(name);
         setUsername(username);
@@ -60,9 +61,4 @@ public class UserDTO {
         setRoleName(roleName);
     }
 
-    //thirdParty profiles
-    public UserDTO(String name, String roleName){
-        setName(name);
-        setRoleName(roleName);
-    }
 }

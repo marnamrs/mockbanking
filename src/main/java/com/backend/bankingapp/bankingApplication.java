@@ -34,10 +34,11 @@ public class bankingApplication {
 //            Add admin:
             adminService.createUser(new UserDTO("Admin", "admin", "1234","ROLE_ADMIN"));
 //            Add accountHolder:
-            adminService.createUser(new UserDTO("User", "user1", "1234", "ROLE_CLIENT", "01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, null, null, null, 0, 0));
-            adminService.createUser(new UserDTO("User", "user2", "1234", "ROLE_CLIENT", "01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, "Spain", "Madrid", "Street", 99, 90009));
+            adminService.createClient(new UserDTO("User", "user1", "1234", "ROLE_CLIENT","01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, null, null, null, 0, 0));
+            adminService.createClient(new UserDTO("User", "user2", "1234", "ROLE_CLIENT", "01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, "Spain", "Madrid", "Street", 99, 90009));
 //            Add thirdParty:
-            adminService.createUser(new UserDTO("ThirdParty", "ROLE_EXTERNAL"));
+            adminService.createExternal("External1");
+
         };
     }
 

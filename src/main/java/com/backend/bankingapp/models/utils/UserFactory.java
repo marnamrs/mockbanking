@@ -27,10 +27,11 @@ public class UserFactory {
                     return new AccountHolder(userDTO.getName(), userDTO.getUsername(), userDTO.getPassword(), role, birthDate, primary);
                 }
             }
-            case "ROLE_EXTERNAL" -> {
-                return new ThirdParty(userDTO.getName(), role);
-            }
             default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error creating User.");
         }
+    }
+
+    public static ThirdParty createExternal(String name, Role role) {
+        return new ThirdParty(name, role);
     }
 }

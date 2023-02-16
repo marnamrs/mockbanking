@@ -14,8 +14,9 @@ public interface AdminServiceInterface {
     User createUser(UserDTO userDTO);
     User createClient(UserDTO userDTO);
     User saveUser(User user);
-    User saveUser(ThirdParty user);
-
+    //Post: Externals
+    ThirdParty createExternal(String name);
+    ThirdParty saveExternal(ThirdParty external);
     //Post: Roles
     Role saveRole(Role role);
     void addRoleToUser(String username, String roleName);
@@ -24,7 +25,10 @@ public interface AdminServiceInterface {
     User getUser(String username);
     User getUserById(Long id);
     List<User> getUsers();
+    //Get: Externals
+    ThirdParty getExternalById(Long id);
+    List<ThirdParty> getExternals();
 
-    //TODO add profile services (Admin, AccountHolder, ThirdParty)
+
 }
 

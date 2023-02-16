@@ -33,7 +33,7 @@ public class AccountHolder extends User{
     })
     private Address mailingAddress;
 
-    @OneToMany(mappedBy = "primaryOwner")
+    @ManyToMany(mappedBy = "owners")
     private List<Account> accounts = new ArrayList<>();
 
     //single address

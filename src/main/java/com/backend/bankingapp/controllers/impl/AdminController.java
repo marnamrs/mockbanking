@@ -12,30 +12,32 @@ import java.util.List;
 //REST API for User management
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/adm")
 public class AdminController {
 
     @Autowired
     private AdminServiceInterface adminService;
 
 
-    @GetMapping("/adm/users")
+    @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
     public List<User> getUsers() {
         return adminService.getUsers();
     }
 
-    @GetMapping("/adm/users/id")
+    @GetMapping("/users/id")
     @ResponseStatus(HttpStatus.OK)
     public User getUserById(@RequestParam Long id){
         return adminService.getUserById(id);
     }
 
-    @PostMapping("/adm/users/add")
+    @PostMapping("/users/add")
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody UserDTO userDTO)  {
         return adminService.createUser(userDTO);
     }
+
+
 
     //TODO add admin POST new accounts
     //TODO add admin POST add client to account

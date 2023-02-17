@@ -40,11 +40,10 @@ public class CheckingAccount extends Account {
     @Enumerated(EnumType.STRING)
     private Status status = Status.ACTIVE;
 
+    //update should be called before each operation or balance check
     @Override
     public void update() {
         Money currentBalance = getBalance();
-        //verify if balance > minBalance before applying maintenance fees
-        boolean beforeMonthlyUpdate = currentBalance.getAmount().compareTo(minimumBalance.getAmount())<0;
 
         //monthlyFee: apply every 30 days
         LocalDateTime monthAgo = LocalDateTime.now().minus(30, ChronoUnit.DAYS);
@@ -59,25 +58,28 @@ public class CheckingAccount extends Account {
             Money updatedBalance = new Money(updatedAmount, currentBalance.getCurrency());
             setBalance(updatedBalance);
         }
-
         Money newBalance = getBalance();
-        //verify if balance > minBalance after applying maintenance fees
-        boolean afterMonthlyUpdate = newBalance.getAmount().compareTo(minimumBalance.getAmount())<0;
 
-        //penaltyFee: apply if monthlyFee application caused balance < minBalance
-        if(!beforeMonthlyUpdate && afterMonthlyUpdate){
-            applyPenaltyFee();
-        }
+        //penaltyFee: will apply if monthlyFee application caused balance < minBalance
+        verifyPenaltyFee(currentBalance.getAmount(), newBalance.getAmount());
+
         //update lastUpdated
         setLastUpdated();
     }
 
-    public void applyPenaltyFee(){
-        Money currentBalance = getBalance();
-        BigDecimal balanceFee = getPenaltyFee().getAmount();
-        BigDecimal newAmount = currentBalance.getAmount().subtract(balanceFee);
-        Money lastBalance = new Money(newAmount, currentBalance.getCurrency());
-        setBalance(lastBalance);
+    //verifyPenaltyFee should be called after balance change
+    public void verifyPenaltyFee(BigDecimal preBalance, BigDecimal postBalance){
+        //check if balance before and after operation < minimumBalance
+        boolean preChange = preBalance.compareTo(minimumBalance.getAmount())<0;
+        boolean postChange = postBalance.compareTo(minimumBalance.getAmount())<0;
+        //apply penalty if minBalance infringement was caused by operation
+        if(!preChange && postChange){
+            Money currentBalance = getBalance();
+            BigDecimal balanceFee = getPenaltyFee().getAmount();
+            BigDecimal newAmount = currentBalance.getAmount().subtract(balanceFee);
+            Money lastBalance = new Money(newAmount, currentBalance.getCurrency());
+            setBalance(lastBalance);
+        }
     }
 
     private String setAccountKey(){

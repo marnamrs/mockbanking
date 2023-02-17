@@ -1,11 +1,12 @@
 package com.backend.bankingapp.services.impl;
 
 import com.backend.bankingapp.dtos.UserDTO;
+import com.backend.bankingapp.models.accounts.Account;
+import com.backend.bankingapp.models.accounts.CheckingAccount;
 import com.backend.bankingapp.models.users.*;
+import com.backend.bankingapp.models.utils.Money;
 import com.backend.bankingapp.models.utils.UserFactory;
-import com.backend.bankingapp.repositories.RoleRepository;
-import com.backend.bankingapp.repositories.ThirdPartyRepository;
-import com.backend.bankingapp.repositories.UserRepository;
+import com.backend.bankingapp.repositories.*;
 import com.backend.bankingapp.services.interfaces.AdminServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,6 +40,10 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
+    private CheckingAccountRepository checkingAccountRepository;
 
 
     @Override
@@ -74,7 +82,10 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
 
     public ThirdParty createExternal(String name){
         log.info("Creating access for external party {}.", name);
-        Role role = roleRepository.findByName("ROLE_EXTERNAL").get();
+        Role role = null;
+        if(roleRepository.findByName("ROLE_EXTERNAL").isPresent()){
+            role = roleRepository.findByName("ROLE_EXTERNAL").get();
+        }
         ThirdParty user = UserFactory.createExternal(name, role);
         //logging key for testing/verification purposes
         log.info("Generated key for user {}: {}", user.getName(), user.getAccessKey());
@@ -150,5 +161,53 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
     public List<ThirdParty> getExternals() {
         log.info("Fetching all third parties.");
         return thirdPartyRepository.findAll();
+    }
+
+    @Override
+    public Account newCheckingAccount(AccountHolder primary) {
+        if(userRepository.findUserById(primary.getId()).isPresent()){
+            //check if user age < 24
+            ChronoLocalDate twentyFourYearsAgo = ChronoLocalDate.from(LocalDate.now().minusYears(24));
+            if(primary.getBirthDate().isBefore(twentyFourYearsAgo)){
+                //return new StudentChecking()
+                return null;
+            }
+            return newCheckingAccount(primary);
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+    }
+
+    @Override
+    public Account newCheckingAccount(AccountHolder primary, AccountHolder secondary) {
+        if(userRepository.findUserById(primary.getId()).isPresent() && userRepository.findUserById(secondary.getId()).isPresent()){
+            //check if both users' age < 24
+            ChronoLocalDate twentyFourYearsAgo = ChronoLocalDate.from(LocalDate.now().minusYears(24));
+            if(primary.getBirthDate().isBefore(twentyFourYearsAgo) && secondary.getBirthDate().isBefore(twentyFourYearsAgo)){
+                //return new StudentChecking()
+                return null;
+            }
+            return newCheckingAccount(primary, secondary);
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+    }
+
+    @Override
+    public Account setBalance(Long accountId, double newBalance) {
+        if(accountRepository.findById(accountId).isPresent()){
+            Account account = accountRepository.findById(accountId).get();
+            //update before executing operation
+            account.update();
+            BigDecimal prevBalance = account.getBalance().getAmount();
+            account.setBalance(new Money(new BigDecimal(newBalance)));
+            BigDecimal postBalance = account.getBalance().getAmount();
+
+            //apply penaltyFee if necessary for classes with minBalance
+            if(checkingAccountRepository.findById(accountId).isPresent()){
+                CheckingAccount acc = checkingAccountRepository.findById(accountId).get();
+                acc.verifyPenaltyFee(prevBalance, postBalance);
+            }
+            //TODO add penaltyFee check for Savings
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
     }
 }

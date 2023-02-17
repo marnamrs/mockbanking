@@ -49,8 +49,7 @@ public class AccountService {
     //add transaction to originator list of transactions
     //get originator new balance
     //if originator is Checking or Savings call originator.applyPenaltyFee()
-
     //return executed transaction
-    // (remember: for Checking+Savings originator account
-    //   originator.applyPenaltyFee() when transaction causes balance to < minBalance!)
+
+
 }

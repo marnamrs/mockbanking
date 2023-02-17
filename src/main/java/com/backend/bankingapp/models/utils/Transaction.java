@@ -47,6 +47,4 @@ public class Transaction {
         this.executionDate = date;
     }
 
-/*TODO add executeTransaction method to accountService (remember: for Checking+Savings call
-   originator.applyPenaltyFee() when transaction causes balance to < minBalance!)*/
 }

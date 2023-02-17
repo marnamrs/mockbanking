@@ -6,6 +6,7 @@ import com.backend.bankingapp.models.users.AccountHolder;
 import com.backend.bankingapp.models.users.Role;
 import com.backend.bankingapp.models.users.ThirdParty;
 import com.backend.bankingapp.models.users.User;
+import com.backend.bankingapp.models.utils.Money;
 
 import java.util.List;
 
@@ -34,8 +35,10 @@ public interface AdminServiceInterface {
     List<ThirdParty> getExternals();
 
     //ACCOUNT MANAGEMENT
-    Account newCheckingAccount(AccountHolder primary);
-    Account newCheckingAccount(AccountHolder primary, AccountHolder secondary);
+
+    Account newCheckingAccount(Money initialBalance, Long accountHolderId);
+
+//    Account newCheckingAccount(Money initialBalance, Long primaryId, Long secondaryId);
 
     Account setBalance(Long accountId, double newBalance);
 

@@ -1,7 +1,10 @@
 package com.backend.bankingapp;
 
 import com.backend.bankingapp.dtos.UserDTO;
+import com.backend.bankingapp.models.accounts.Account;
+import com.backend.bankingapp.models.users.AccountHolder;
 import com.backend.bankingapp.models.users.Role;
+import com.backend.bankingapp.models.utils.Money;
 import com.backend.bankingapp.services.impl.AdminService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -9,6 +12,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.math.BigDecimal;
 
 @SpringBootApplication
 public class bankingApplication {
@@ -34,12 +39,12 @@ public class bankingApplication {
 //            Add admin:
             adminService.createUser(new UserDTO("Admin", "admin", "1234","ROLE_ADMIN"));
 //            Add accountHolder:
-            adminService.createClient(new UserDTO("User", "user1", "1234", "ROLE_CLIENT","01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, null, null, null, 0, 0));
+            AccountHolder owner = adminService.createClient(new UserDTO("User", "user1", "1234", "ROLE_CLIENT","01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, null, null, null, 0, 0));
             adminService.createClient(new UserDTO("User", "user2", "1234", "ROLE_CLIENT", "01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, "Spain", "Madrid", "Street", 99, 90009));
 //            Add thirdParty:
             adminService.createExternal("External1");
 //            Add checkingAccount:
-
+            Account account1 = adminService.newCheckingAccount(new Money(new BigDecimal("300")), owner.getId());
 
         };
     }

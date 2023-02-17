@@ -67,6 +67,7 @@ public abstract class Account {
         setLastUpdated(creationDate);
     }
 
+
     public void setCreationDate(){
         //default: set according to CET timezone
         ZoneId zone = ZoneId.of("Europe/Madrid");

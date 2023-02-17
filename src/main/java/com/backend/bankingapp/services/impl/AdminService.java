@@ -70,14 +70,14 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
         return saveUser(UserFactory.createUser(userDTO, role));
     }
 
-    public User createClient(UserDTO userDTO) {
+    public AccountHolder createClient(UserDTO userDTO) {
         log.info("Creating new user {} with role Client", userDTO.getName());
         if (roleRepository.findByName("ROLE_CLIENT").isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Role not found in the database");
         }
         Role role = roleRepository.findByName("ROLE_CLIENT").get();
         User user = UserFactory.createUser(userDTO, role);
-        return saveUser(user);
+        return (AccountHolder) saveUser(user);
     }
 
     public ThirdParty createExternal(String name){
@@ -164,48 +164,53 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
     }
 
     @Override
-    public Account newCheckingAccount(AccountHolder primary) {
-        if(userRepository.findUserById(primary.getId()).isPresent()){
-            //check if user age < 24
-            ChronoLocalDate twentyFourYearsAgo = ChronoLocalDate.from(LocalDate.now().minusYears(24));
-            if(primary.getBirthDate().isBefore(twentyFourYearsAgo)){
-                //return new StudentChecking()
-                return null;
+    public Account newCheckingAccount(Money initialBalance, Long AccountHolderId) {
+        //verify if user exists
+        if(userRepository.findUserById(AccountHolderId).isPresent()){
+
+            //verify user is AccountHolder type
+            String className = "com.backend.bankingapp.models.users.AccountHolder";
+            if(userRepository.findUserById(AccountHolderId).get().getClass().getName().equals(className)){
+
+                AccountHolder primary = (AccountHolder) userRepository.findUserById(AccountHolderId).get();
+
+                //check if user age < 24
+                ChronoLocalDate twentyFourYearsAgo = ChronoLocalDate.from(LocalDate.now().minusYears(24));
+                if(primary.getBirthDate().isAfter(twentyFourYearsAgo)){
+                    log.info("User {} is eligible for StudentChecking", primary.getName());
+                    //TODO create StudentChecking
+                    //return new StudentChecking()
+                    return null;
+                }
+
+                log.info("Creating new CheckingAccount of user {}", primary.getName());
+                Account account = new CheckingAccount(initialBalance, (AccountHolder) primary);
+                log.info("Saving new CheckingAccount {} to the database", account.getId());
+                return accountRepository.save(account);
             }
-            return newCheckingAccount(primary);
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
     }
 
-    @Override
-    public Account newCheckingAccount(AccountHolder primary, AccountHolder secondary) {
-        if(userRepository.findUserById(primary.getId()).isPresent() && userRepository.findUserById(secondary.getId()).isPresent()){
-            //check if both users' age < 24
-            ChronoLocalDate twentyFourYearsAgo = ChronoLocalDate.from(LocalDate.now().minusYears(24));
-            if(primary.getBirthDate().isBefore(twentyFourYearsAgo) && secondary.getBirthDate().isBefore(twentyFourYearsAgo)){
-                //return new StudentChecking()
-                return null;
-            }
-            return newCheckingAccount(primary, secondary);
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-    }
+
 
     @Override
     public Account setBalance(Long accountId, double newBalance) {
-        if(accountRepository.findById(accountId).isPresent()){
-            Account account = accountRepository.findById(accountId).get();
+        if(accountRepository.findAccountById(accountId).isPresent()){
+            Account account = accountRepository.findAccountById(accountId).get();
             //update before executing operation
             account.update();
             BigDecimal prevBalance = account.getBalance().getAmount();
             account.setBalance(new Money(new BigDecimal(newBalance)));
             BigDecimal postBalance = account.getBalance().getAmount();
-
+            accountRepository.save(account);
             //apply penaltyFee if necessary for classes with minBalance
             if(checkingAccountRepository.findById(accountId).isPresent()){
                 CheckingAccount acc = checkingAccountRepository.findById(accountId).get();
                 acc.verifyPenaltyFee(prevBalance, postBalance);
+                account = acc;
             }
+            return account;
             //TODO add penaltyFee check for Savings
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");

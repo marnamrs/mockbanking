@@ -1,5 +1,6 @@
 package com.backend.bankingapp.models.accounts;
 
+import com.backend.bankingapp.models.users.AccountHolder;
 import com.backend.bankingapp.models.utils.HashCreator;
 import com.backend.bankingapp.models.utils.Money;
 import com.backend.bankingapp.models.utils.Status;
@@ -39,6 +40,14 @@ public class CheckingAccount extends Account {
     private Money monthlyFee = new Money(new BigDecimal("12"));
     @Enumerated(EnumType.STRING)
     private Status status = Status.ACTIVE;
+
+    public CheckingAccount(Money balance, AccountHolder primaryOwner) {
+        super(balance, primaryOwner);
+    }
+    public CheckingAccount(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
+        super(balance, primaryOwner, secondaryOwner);
+    }
+
 
     //update should be called before each operation or balance check
     @Override

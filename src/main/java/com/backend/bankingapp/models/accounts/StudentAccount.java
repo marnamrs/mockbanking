@@ -39,7 +39,7 @@ public class StudentAccount extends Account{
     public void update() {
         ChronoLocalDate twentyFourYearsAgo = ChronoLocalDate.from(LocalDate.now().minusYears(24));
         if(getPrimaryOwner().getBirthDate().isBefore(twentyFourYearsAgo)){
-            throw new ResponseStatusException(HttpStatus.UPGRADE_REQUIRED, "Account owner does not qualify for Student Checking anymore. Please update Account type to CheckingAccount.");
+            throw new ResponseStatusException(HttpStatus.UPGRADE_REQUIRED, "Account owner does not qualify for Student Checking. Please update Account type to CheckingAccount.");
         }
     }
 

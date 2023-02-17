@@ -1,6 +1,9 @@
 package com.backend.bankingapp.controllers.impl;
 
+import com.backend.bankingapp.controllers.interfaces.AdminControllerInterface;
+import com.backend.bankingapp.dtos.AccountDTO;
 import com.backend.bankingapp.dtos.UserDTO;
+import com.backend.bankingapp.models.accounts.Account;
 import com.backend.bankingapp.models.users.ThirdParty;
 import com.backend.bankingapp.models.users.User;
 import com.backend.bankingapp.services.interfaces.AdminServiceInterface;
@@ -12,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
-public class AdminController {
+public class AdminController implements AdminControllerInterface {
 
     @Autowired
     private AdminServiceInterface adminService;
@@ -37,6 +40,13 @@ public class AdminController {
     @ResponseStatus(HttpStatus.OK)
     public ThirdParty getExternalById(@RequestParam Long id){ return adminService.getExternalById(id); }
 
+    @GetMapping("/accounts")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Account> getAccounts(){return adminService.getAccounts();};
+    @GetMapping("/accounts/id")
+    @ResponseStatus(HttpStatus.OK)
+    public Account getAccountById(@RequestParam Long id){return adminService.getAccountById(id);};
+
     //POST
     @PostMapping("/users/add")
     @ResponseStatus(HttpStatus.CREATED)
@@ -49,12 +59,30 @@ public class AdminController {
         return adminService.createExternal(name);
     }
 
-
-    //TODO add admin POST new accounts
-    //TODO add admin POST add client to account
+    @PostMapping("/accounts/add/checking")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Account createCheckingAccount(@RequestBody AccountDTO accountDTO) {
+        return null;
+    }
+    @PostMapping("/accounts/add/savings")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Account createSavingsAccount() {
+        return null;
+    }
+    @PostMapping("/accounts/add/credit")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Account createCreditCard() {
+        return null;
+    }
+    @PostMapping("/accounts/update/balance")
+    @ResponseStatus(HttpStatus.OK)
+    public Account setAccountBalance(@RequestParam Long accountId, @RequestParam double amount) {
+        return adminService.setBalance(accountId, amount);
+    }
+//TODO add admin POST add client to account
     //TODO add admin GET accounts
     //TODO add admin GET balance by client || account
-    //TODO add admin POST balance to account
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.backend.bankingapp.services.interfaces;
 
+import com.backend.bankingapp.dtos.AccountDTO;
 import com.backend.bankingapp.dtos.UserDTO;
 import com.backend.bankingapp.models.accounts.Account;
 import com.backend.bankingapp.models.users.AccountHolder;
@@ -36,11 +37,10 @@ public interface AdminServiceInterface {
 
     //ACCOUNT MANAGEMENT
 
-    Account newCheckingAccount(Money initialBalance, Long accountHolderId);
-
-//    Account newCheckingAccount(Money initialBalance, Long primaryId, Long secondaryId);
-
+    Account newCheckingAccount(AccountDTO accountDTO);
+    //Account newCheckingAccount(Money initialBalance, Long primaryId, Long secondaryId);
     Account setBalance(Long accountId, double newBalance);
-
+    List<Account> getAccounts();
+    Account getAccountById(Long id);
 }
 

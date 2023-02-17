@@ -44,7 +44,7 @@ public class bankingApplication {
 //            Add thirdParty:
             adminService.createExternal("External1");
 //            Add checkingAccount:
-            Account account1 = adminService.newCheckingAccount(new Money(new BigDecimal("300")), owner.getId());
+            Account account1 = adminService.newCheckingAccount(300, owner.getId());
 
         };
     }

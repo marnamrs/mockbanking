@@ -1,8 +1,10 @@
 package com.backend.bankingapp.services.impl;
 
+import com.backend.bankingapp.dtos.AccountDTO;
 import com.backend.bankingapp.dtos.UserDTO;
 import com.backend.bankingapp.models.accounts.Account;
 import com.backend.bankingapp.models.accounts.CheckingAccount;
+import com.backend.bankingapp.models.accounts.StudentAccount;
 import com.backend.bankingapp.models.users.*;
 import com.backend.bankingapp.models.utils.Money;
 import com.backend.bankingapp.models.utils.UserFactory;
@@ -44,6 +46,8 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
     private AccountRepository accountRepository;
     @Autowired
     private CheckingAccountRepository checkingAccountRepository;
+    @Autowired
+    private StudentAccountRepository studentAccountRepository;
 
 
     @Override
@@ -163,36 +167,39 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
         return thirdPartyRepository.findAll();
     }
 
+    //creation of CheckingAccount or StudentAccount
     @Override
-    public Account newCheckingAccount(Money initialBalance, Long AccountHolderId) {
+    public Account newCheckingAccount(AccountDTO accountDTO) {
         //verify if user exists
-        if(userRepository.findUserById(AccountHolderId).isPresent()){
+        Long userId = accountDTO.getPrimaryOwnerId();
+        double initialBalance = accountDTO.getDoubleBalance();
+        if(userRepository.findUserById(userId).isPresent()){
 
             //verify user is AccountHolder type
             String className = "com.backend.bankingapp.models.users.AccountHolder";
-            if(userRepository.findUserById(AccountHolderId).get().getClass().getName().equals(className)){
+            if(userRepository.findUserById(userId).get().getClass().getName().equals(className)){
 
-                AccountHolder primary = (AccountHolder) userRepository.findUserById(AccountHolderId).get();
+                AccountHolder primary = (AccountHolder) userRepository.findUserById(userId).get();
+                Money balance = new Money(new BigDecimal(initialBalance));
 
                 //check if user age < 24
                 ChronoLocalDate twentyFourYearsAgo = ChronoLocalDate.from(LocalDate.now().minusYears(24));
                 if(primary.getBirthDate().isAfter(twentyFourYearsAgo)){
                     log.info("User {} is eligible for StudentChecking", primary.getName());
-                    //TODO create StudentChecking
-                    //return new StudentChecking()
-                    return null;
+                    log.info("Creating new StudentAccount of user {}", primary.getName());
+                    Account studentAcc = new StudentAccount(balance, primary);
+                    log.info("Saving new StudentAccount {} to the database", studentAcc.getId());
+                    return accountRepository.save(studentAcc);
                 }
 
                 log.info("Creating new CheckingAccount of user {}", primary.getName());
-                Account account = new CheckingAccount(initialBalance, (AccountHolder) primary);
+                Account account = new CheckingAccount(balance, primary);
                 log.info("Saving new CheckingAccount {} to the database", account.getId());
                 return accountRepository.save(account);
             }
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User/AccountHolder not found");
     }
-
-
 
     @Override
     public Account setBalance(Long accountId, double newBalance) {
@@ -212,6 +219,20 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
             }
             return account;
             //TODO add penaltyFee check for Savings
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
+    }
+
+    @Override
+    public List<Account> getAccounts() {
+        return accountRepository.findAll();
+    }
+
+    @Override
+    public Account getAccountById(Long id) {
+        log.info("Fetching account {}", id);
+        if(accountRepository.findAccountById(id).isPresent()){
+            return accountRepository.findAccountById(id).get();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
     }

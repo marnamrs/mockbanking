@@ -15,20 +15,19 @@ public class ThirdParty {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    private String accessKey;
+    private String accessKey = setAccessKey();
     @ManyToOne
     private Role role;
 
     public ThirdParty(String name, Role role){
         setName(name);
-        setAccessKey();
         setRole(role);
     }
 
-    public void setAccessKey() {
+    private String setAccessKey() {
         //generates 8-byte key to be kept by thirdParty for future access
         //encrypted key will be stored in DB
-        this.accessKey = HashCreator.createKey();
+        return HashCreator.createKey();
     }
 
 }

@@ -38,6 +38,8 @@ public class bankingApplication {
             adminService.createClient(new UserDTO("User", "user2", "1234", "ROLE_CLIENT", "01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, "Spain", "Madrid", "Street", 99, 90009));
 //            Add thirdParty:
             adminService.createExternal("External1");
+//            Add checkingAccount:
+
 
         };
     }

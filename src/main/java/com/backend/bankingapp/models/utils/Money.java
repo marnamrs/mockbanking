@@ -51,8 +51,8 @@ public class Money {
         return this.amount;
     }
 
-    public BigDecimal decreaseAmount(BigDecimal addAmount) {
-        setAmount(this.amount.subtract(addAmount));
+    public BigDecimal decreaseAmount(BigDecimal subsAmount) {
+        setAmount(this.amount.subtract(subsAmount));
         return this.amount;
     }
 

@@ -55,12 +55,13 @@ public class AccountHolder extends User{
     //TODO add transfer method
     //TODO check balance by client
 
-    //TODO move getBalance() to service
+    //TODO move getBalance() to service (! should update())
 //    public BigDecimal getBalance(){
 //        //get global balance of all accounts
 //        Money sum = new Money(new BigDecimal("0"));
 //        for(Account a : accounts){
 //            //apply pending fees and interests
+//            log.info("Updating account {}", a.getId());
 //            a.update();
 //            //add account balance to sum
 //            sum.increaseAmount(a.getBalance());

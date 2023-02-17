@@ -1,6 +1,7 @@
 package com.backend.bankingapp.models.utils;
 
 import com.backend.bankingapp.models.accounts.Account;
+import com.backend.bankingapp.models.accounts.CheckingAccount;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,4 +46,7 @@ public class Transaction {
         //override: set given date
         this.executionDate = date;
     }
+
+/*TODO add executeTransaction method to accountService (remember: for Checking+Savings call
+   originator.applyPenaltyFee() when transaction causes balance to < minBalance!)*/
 }

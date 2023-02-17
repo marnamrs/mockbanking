@@ -1,17 +1,14 @@
 package com.backend.bankingapp.models.accounts;
 
 import com.backend.bankingapp.models.users.AccountHolder;
-import com.backend.bankingapp.models.users.User;
 import com.backend.bankingapp.models.utils.Money;
 import com.backend.bankingapp.models.utils.Transaction;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,17 +42,29 @@ public abstract class Account {
             @AttributeOverride(name="currency", column = @Column(name = "penalty_fee_currency")),
             @AttributeOverride(name="amount", column = @Column(name = "penalty_fee_amount")),
     })
-    private Money penaltyFee;
-    private LocalDateTime creationDate;
-    private LocalDateTime lastAccessDate;
+    private Money penaltyFee = new Money(new BigDecimal("40"));
+    //default DateTime
+    private LocalDateTime creationDate = LocalDateTime.now();
+    private LocalDateTime lastUpdated = LocalDateTime.now();
 
 
     public Account(Money balance){
         setBalance(balance);
-        //default penaltyFee
-        setPenaltyFee(new Money(new BigDecimal("40.00")));
         setCreationDate();
-        setLastAccessDate(creationDate);
+        setLastUpdated(creationDate);
+    }
+    public Account(Money balance, AccountHolder primaryOwner){
+        setBalance(balance);
+        setPrimaryOwner(primaryOwner);
+        setCreationDate();
+        setLastUpdated(creationDate);
+    }
+    public Account(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner){
+        setBalance(balance);
+        setPrimaryOwner(primaryOwner);
+        setSecondaryOwner(secondaryOwner);
+        setCreationDate();
+        setLastUpdated(creationDate);
     }
 
     public void setCreationDate(){
@@ -63,18 +72,17 @@ public abstract class Account {
         ZoneId zone = ZoneId.of("Europe/Madrid");
         creationDate = LocalDateTime.now(zone);
     }
-    public void setLastAccessDate(){
+    public void setLastUpdated(){
         //default: set according to CET timezone
         ZoneId zone = ZoneId.of("Europe/Madrid");
         creationDate = LocalDateTime.now(zone);
     }
-    public void setLastAccessDate(LocalDateTime date){
+    public void setLastUpdated(LocalDateTime date){
         //override: set given date
-        this.lastAccessDate = date;
+        this.lastUpdated = date;
     }
 
     //subclasses need to define update method for fees and interests
-    //TODO update() gets called for each getBalance
     public abstract void update();
 
     @Override

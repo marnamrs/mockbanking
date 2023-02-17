@@ -3,6 +3,7 @@ package com.backend.bankingapp.models.users;
 import com.backend.bankingapp.models.accounts.Account;
 import com.backend.bankingapp.models.utils.Address;
 import com.backend.bankingapp.models.utils.Money;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,8 +35,10 @@ public class AccountHolder extends User{
     private Address mailingAddress;
 
     @OneToMany(mappedBy = "primaryOwner")
+    @JsonIgnore
     private List<Account> primaryAccounts = new ArrayList<>();
     @OneToMany(mappedBy = "secondaryOwner")
+    @JsonIgnore
     private List<Account> secondaryAccounts = new ArrayList<>();
 
     //single address
@@ -53,19 +56,7 @@ public class AccountHolder extends User{
     }
 
     //TODO add transfer method
-    //TODO check balance by client
 
     //TODO move getBalance() to service (! should update())
-//    public BigDecimal getBalance(){
-//        //get global balance of all accounts
-//        Money sum = new Money(new BigDecimal("0"));
-//        for(Account a : accounts){
-//            //apply pending fees and interests
-//            log.info("Updating account {}", a.getId());
-//            a.update();
-//            //add account balance to sum
-//            sum.increaseAmount(a.getBalance());
-//        }
-//        return sum.getAmount();
-//    }
+
 }

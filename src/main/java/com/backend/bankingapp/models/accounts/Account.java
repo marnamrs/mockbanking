@@ -3,6 +3,7 @@ package com.backend.bankingapp.models.accounts;
 import com.backend.bankingapp.models.users.AccountHolder;
 import com.backend.bankingapp.models.utils.Money;
 import com.backend.bankingapp.models.utils.Transaction;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 

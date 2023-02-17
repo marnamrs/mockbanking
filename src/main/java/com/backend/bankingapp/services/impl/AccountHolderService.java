@@ -19,6 +19,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
@@ -37,6 +39,33 @@ public class AccountHolderService {
         return userRepository.findByUsername(String.valueOf(user.getPrincipal())).get();
     }
 
+    public List<Account> getAccounts(Authentication user){
+        log.info("Fetching accounts for user {}", user.getPrincipal());
+        AccountHolder u = (AccountHolder) userRepository.findByUsername(String.valueOf(user.getPrincipal())).get();
+        List<Account> acc1 = u.getPrimaryAccounts();
+        List<Account> acc2 = u.getSecondaryAccounts();
+        return Stream.concat(acc1.stream(), acc2.stream()).toList();
+    }
+
+    public Account getAccountById(Authentication user, Long accountId){
+        log.info("Fetching account {} for user {}", accountId, user.getPrincipal());
+        AccountHolder u = (AccountHolder) userRepository.findByUsername(String.valueOf(user.getPrincipal())).get();
+        Optional<Account> account = accountRepository.findById(accountId);
+        //verify if account exists
+        if(account.isPresent()){
+            Long userId = u.getId();
+            Long primaryOwnerId = account.get().getPrimaryOwner().getId();
+            Long secondaryOwnerId = account.get().getSecondaryOwner().getId();
+            //verify if user owns account
+            if(Objects.equals(userId, primaryOwnerId) || Objects.equals(userId, secondaryOwnerId)){
+                return account.get();
+            } else {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Permission denied.");
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
+    };
+
     public BigDecimal getBalance(Authentication user){
         log.info("Fetching global balance for user {}", user.getPrincipal());
         AccountHolder owner = (AccountHolder) userRepository.findByUsername(String.valueOf(user.getPrincipal())).get();
@@ -47,9 +76,10 @@ public class AccountHolderService {
         List<Account> accounts = Stream.concat(acc1.stream(), acc2.stream()).toList();
         //Update and get balance for each account
         for(Account a : accounts){
-            System.out.println("------- balance pre-update: " + a.getBalance().getAmount());
+            //apply any pending fees before checking balance
             a.update();
-            System.out.println("------- balance post-update: " + a.getBalance().getAmount());
+            accountRepository.save(a);
+            //TODO another loop to get updated balance
             sum = sum.add(a.getBalance().getAmount());
         }
         log.info("Global balance for user {} is {}", user.getPrincipal(), sum);

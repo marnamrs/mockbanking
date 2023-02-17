@@ -10,14 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -33,6 +29,8 @@ public class AccountHolderService {
     private RoleRepository roleRepository;
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private AccountService accountService;
 
     public User getUserInfo(Authentication user) {
         log.info("Fetching user {}", user.getPrincipal());
@@ -44,7 +42,13 @@ public class AccountHolderService {
         AccountHolder u = (AccountHolder) userRepository.findByUsername(String.valueOf(user.getPrincipal())).get();
         List<Account> acc1 = u.getPrimaryAccounts();
         List<Account> acc2 = u.getSecondaryAccounts();
-        return Stream.concat(acc1.stream(), acc2.stream()).toList();
+        List<Account> acc = Stream.concat(acc1.stream(), acc2.stream()).toList();
+        //update accounts
+        accountService.updateAll(acc);
+        //fetch updated accounts and return all
+        List<Account> updated1 = u.getPrimaryAccounts();
+        List<Account> updated2 = u.getSecondaryAccounts();
+        return Stream.concat(updated1.stream(), updated2.stream()).toList();
     }
 
     public Account getAccountById(Authentication user, Long accountId){
@@ -58,7 +62,10 @@ public class AccountHolderService {
             Long secondaryOwnerId = account.get().getSecondaryOwner().getId();
             //verify if user owns account
             if(Objects.equals(userId, primaryOwnerId) || Objects.equals(userId, secondaryOwnerId)){
-                return account.get();
+                //update account
+                accountService.update(account.get());
+                //return updated account
+                return accountRepository.findById(accountId).get();
             } else {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Permission denied.");
             }
@@ -74,17 +81,22 @@ public class AccountHolderService {
         List<Account> acc1 = owner.getPrimaryAccounts();
         List<Account> acc2 = owner.getSecondaryAccounts();
         List<Account> accounts = Stream.concat(acc1.stream(), acc2.stream()).toList();
-        //Update and get balance for each account
-        for(Account a : accounts){
-            //apply any pending fees before checking balance
-            a.update();
-            accountRepository.save(a);
-            //TODO another loop to get updated balance
+        //Update accounts and fetch updated
+        accountService.updateAll(accounts);
+        List<Account> upd1 = owner.getPrimaryAccounts();
+        List<Account> upd2 = owner.getSecondaryAccounts();
+        List<Account> updAccounts = Stream.concat(upd1.stream(), upd2.stream()).toList();
+        //sum balance for each account
+        for(Account a : updAccounts){
             sum = sum.add(a.getBalance().getAmount());
         }
         log.info("Global balance for user {} is {}", user.getPrincipal(), sum);
         return sum;
     }
+
+    //TODO add makerTransaction() for AccountHolders
+    //should verify user owns originator account
+    //should call createTransaction from accountservice
 
 
 }

@@ -13,8 +13,4 @@ public class Admin extends User {
     super(name, username, password, role);
     }
 
-//TODO add Admin methods
-//specific methods:
-    //create thirdparty user
-    //create account of any type
 }

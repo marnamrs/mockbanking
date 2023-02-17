@@ -55,8 +55,4 @@ public class AccountHolder extends User{
         setMailingAddress(mailingAddress);
     }
 
-    //TODO add transfer method
-
-    //TODO move getBalance() to service (! should update())
-
 }

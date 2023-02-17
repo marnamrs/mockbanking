@@ -1,6 +1,8 @@
 package com.backend.bankingapp.services.impl;
 
+import com.backend.bankingapp.dtos.TransactionDTO;
 import com.backend.bankingapp.models.users.ThirdParty;
+import com.backend.bankingapp.repositories.AccountRepository;
 import com.backend.bankingapp.repositories.ThirdPartyRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,10 @@ import java.util.List;
 public class ExternalService {
     @Autowired
     private ThirdPartyRepository thirdPartyRepository;
-    //TODO add accountrepository
+    @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
+    private AccountService accountService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -49,9 +54,10 @@ public class ExternalService {
     }
 
     //TODO complete transaction method for Ext
-    public String makeTransaction(String key, String amount, Long accountId, String accountKey ) {
+    public String makeTransaction(String userKey, TransactionDTO transactionDTO) {
         String message = null;
-        if(verifyKey(key)){
+        if(verifyKey(userKey)){
+            accountService.createTransaction(transactionDTO);
             // find account by accountkey
             // increase or decrease by amount
         } else {

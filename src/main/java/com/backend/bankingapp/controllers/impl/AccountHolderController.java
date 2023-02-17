@@ -46,8 +46,6 @@ public class AccountHolderController {
     public BigDecimal getGlobalBalance(Authentication user){
         return accountHolderService.getBalance(user);
     }
-    //GET
-    //TODO add get account
 
     //POST
     //TODO add make transfer from account

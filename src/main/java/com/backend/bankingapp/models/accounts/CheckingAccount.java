@@ -5,10 +5,7 @@ import com.backend.bankingapp.models.utils.HashCreator;
 import com.backend.bankingapp.models.utils.Money;
 import com.backend.bankingapp.models.utils.Status;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -18,6 +15,7 @@ import java.time.temporal.ChronoUnit;
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class CheckingAccount extends Account {

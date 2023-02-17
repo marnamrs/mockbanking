@@ -1,5 +1,6 @@
 package com.backend.bankingapp;
 
+import com.backend.bankingapp.dtos.AccountDTO;
 import com.backend.bankingapp.dtos.UserDTO;
 import com.backend.bankingapp.models.accounts.Account;
 import com.backend.bankingapp.models.users.AccountHolder;
@@ -40,11 +41,12 @@ public class bankingApplication {
             adminService.createUser(new UserDTO("Admin", "admin", "1234","ROLE_ADMIN"));
 //            Add accountHolder:
             AccountHolder owner = adminService.createClient(new UserDTO("User", "user1", "1234", "ROLE_CLIENT","01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, null, null, null, 0, 0));
-            adminService.createClient(new UserDTO("User", "user2", "1234", "ROLE_CLIENT", "01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, "Spain", "Madrid", "Street", 99, 90009));
+            AccountHolder owner2 = adminService.createClient(new UserDTO("User", "user2", "1234", "ROLE_CLIENT", "01/01/2020", "Spain", "Barcelona", "Street", 10, 10001, "Spain", "Madrid", "Street", 99, 90009));
 //            Add thirdParty:
             adminService.createExternal("External1");
 //            Add checkingAccount:
-            Account account1 = adminService.newCheckingAccount(300, owner.getId());
+            adminService.newCheckingAccount(new AccountDTO(300, owner.getId()));
+            adminService.newCheckingAccount(new AccountDTO(300, owner2.getId()));
 
         };
     }

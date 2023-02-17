@@ -16,4 +16,14 @@ public class AccountDTO {
     private Long primaryOwnerId;
     @Positive
     private Long secondaryOwnerId;
+
+    public AccountDTO(double doubleBalance, Long primaryOwnerId) {
+        setDoubleBalance(doubleBalance);
+        setPrimaryOwnerId(primaryOwnerId);
+    }
+//    public AccountDTO(double doubleBalance, Long primaryOwnerId, Long secondaryOwnerId) {
+//        setDoubleBalance(doubleBalance);
+//        setPrimaryOwnerId(primaryOwnerId);
+//        setSecondaryOwnerId(secondaryOwnerId);
+//    }
 }

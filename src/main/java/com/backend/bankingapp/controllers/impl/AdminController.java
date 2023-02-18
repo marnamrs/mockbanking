@@ -21,7 +21,7 @@ public class AdminController implements AdminControllerInterface {
     private AdminServiceInterface adminService;
 
 
-    //GET
+    //GET:User
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
     public List<User> getUsers() {
@@ -33,6 +33,7 @@ public class AdminController implements AdminControllerInterface {
         return adminService.getUserById(id);
     }
 
+    //GET:ThirdParty
     @GetMapping("/externals")
     @ResponseStatus(HttpStatus.OK)
     public List<ThirdParty> getExternals() { return adminService.getExternals(); }
@@ -40,6 +41,7 @@ public class AdminController implements AdminControllerInterface {
     @ResponseStatus(HttpStatus.OK)
     public ThirdParty getExternalById(@RequestParam Long id){ return adminService.getExternalById(id); }
 
+    //GET: Accounts
     @GetMapping("/accounts")
     @ResponseStatus(HttpStatus.OK)
     public List<Account> getAccounts(){return adminService.getAccounts();};
@@ -47,18 +49,21 @@ public class AdminController implements AdminControllerInterface {
     @ResponseStatus(HttpStatus.OK)
     public Account getAccountById(@RequestParam Long id){return adminService.getAccountById(id);};
 
-    //POST
+    //POST: Users
     @PostMapping("/users/add")
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody UserDTO userDTO)  {
         return adminService.createUser(userDTO);
     }
+
+    //POST: ThirdParty
     @PostMapping("/externals/add")
     @ResponseStatus(HttpStatus.CREATED)
     public ThirdParty createExternal(@RequestBody String name)  {
         return adminService.createExternal(name);
     }
 
+    //POST: Accounts [Creation]
     @PostMapping("/accounts/add/checking")
     @ResponseStatus(HttpStatus.CREATED)
     public Account createCheckingAccount(@RequestBody AccountDTO accountDTO) {
@@ -72,17 +77,15 @@ public class AdminController implements AdminControllerInterface {
     @PostMapping("/accounts/add/credit")
     @ResponseStatus(HttpStatus.CREATED)
     public Account createCreditCard() {
+        //TODO complete controller for createCreditCard()
         return null;
     }
+
+    //POST: Accounts [Updating]
     @PostMapping("/accounts/update/balance")
     @ResponseStatus(HttpStatus.OK)
     public Account setAccountBalance(@RequestParam Long accountId, @RequestParam double amount) {
         return adminService.setBalance(accountId, amount);
     }
-//TODO add admin POST add client to account
-    //TODO add admin GET accounts
-    //TODO add admin GET balance by client || account
-
-
 
 }

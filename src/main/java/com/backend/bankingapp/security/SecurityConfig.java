@@ -48,7 +48,6 @@ public class SecurityConfig {
 
     /**
      * Bean definition for AuthenticationManager
-     *
      * @param authenticationConfiguration the instance of AuthenticationConfiguration
      * @return an instance of the AuthenticationManager
      * @throws Exception if there is an issue getting the instance of the AuthenticationManager
@@ -60,7 +59,6 @@ public class SecurityConfig {
 
     /**
      * Bean definition for SecurityFilterChain
-     *
      * @param http the instance of HttpSecurity
      * @return an instance of the SecurityFilterChain
      * @throws Exception if there is an issue building the SecurityFilterChain
@@ -79,10 +77,13 @@ public class SecurityConfig {
         http.authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/api/login/**").permitAll()
                 .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
-//                uncomment to allow free registry as new client:
+//                To allow free registry as new client:
+//                --> 1) Uncomment next line:
 //                .requestMatchers(POST, "/api/client/new").permitAll()
+//                --> 2) Comment next line:
+                .requestMatchers(POST, "/api/client/new").denyAll()
                 .requestMatchers("/api/client/**").hasAuthority("ROLE_CLIENT")
-                //operations secured via required access key
+//                operations on path /external/* secured via required access key:
                 .requestMatchers("/api/external/**").permitAll()
                 .anyRequest().authenticated()
         );
@@ -90,7 +91,6 @@ public class SecurityConfig {
         http.addFilter(customAuthenticationFilter);
         // Add the custom authorization filter before the standard authentication filter.
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-
         // Build the security filter chain to be returned.
         return http.build();
     }

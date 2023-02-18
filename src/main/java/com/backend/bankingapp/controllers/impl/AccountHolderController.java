@@ -24,12 +24,15 @@ public class AccountHolderController {
     @Autowired
     private UserRepository userRepository;
 
+    //GET: User info
     @GetMapping("/info")
     @ResponseStatus(HttpStatus.OK)
     public User getUserInfo(Authentication user){
         //Authentication user --> username + role
         return accountHolderService.getUserInfo(user);
     }
+
+    //GET: Account info
     @GetMapping("/accounts")
     @ResponseStatus(HttpStatus.OK)
     public List<Account> getUserAccounts(Authentication user){
@@ -49,6 +52,7 @@ public class AccountHolderController {
     //POST
     //TODO add make transfer from account
 
+    //To make endpoint available, check instructions on security config file
     @PostMapping("/client/new-client")
     @ResponseStatus(HttpStatus.CREATED)
     public User createClient(@RequestBody UserDTO userDTO) {

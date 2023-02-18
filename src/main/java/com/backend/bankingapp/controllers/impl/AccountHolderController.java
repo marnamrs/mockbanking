@@ -3,13 +3,12 @@ package com.backend.bankingapp.controllers.impl;
 import com.backend.bankingapp.dtos.UserDTO;
 import com.backend.bankingapp.models.accounts.Account;
 import com.backend.bankingapp.models.users.User;
-import com.backend.bankingapp.repositories.UserRepository;
+import com.backend.bankingapp.repositories.usersrepos.UserRepository;
 import com.backend.bankingapp.services.impl.AccountHolderService;
 import com.backend.bankingapp.services.interfaces.AdminServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;

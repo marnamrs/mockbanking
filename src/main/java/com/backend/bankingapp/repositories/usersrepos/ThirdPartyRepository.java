@@ -1,4 +1,4 @@
-package com.backend.bankingapp.repositories;
+package com.backend.bankingapp.repositories.usersrepos;
 
 import com.backend.bankingapp.models.users.ThirdParty;
 import org.springframework.data.jpa.repository.JpaRepository;

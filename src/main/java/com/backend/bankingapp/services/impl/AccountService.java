@@ -3,7 +3,10 @@ package com.backend.bankingapp.services.impl;
 import com.backend.bankingapp.dtos.TransactionDTO;
 import com.backend.bankingapp.models.accounts.Account;
 import com.backend.bankingapp.models.utils.Transaction;
-import com.backend.bankingapp.repositories.AccountRepository;
+import com.backend.bankingapp.repositories.accountrepos.AccountRepository;
+import com.backend.bankingapp.repositories.accountrepos.CheckingAccountRepository;
+import com.backend.bankingapp.repositories.accountrepos.SavingsAccountRepository;
+import com.backend.bankingapp.repositories.accountrepos.StudentAccountRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,12 @@ import java.util.List;
 public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private CheckingAccountRepository checkingAccountRepository;
+    @Autowired
+    private StudentAccountRepository studentAccountRepository;
+    @Autowired
+    private SavingsAccountRepository savingsAccountRepository;
 
     //update: : apply any pending fees/interests
     public void update(Account account){
@@ -40,6 +49,7 @@ public class AccountService {
         return null;
     }
 
+    //TODO create executeTransaction method in AccService
     //executeTransaction(Transaction transaction)
     //update originator and beneficiary
     //get originator initial balance

@@ -40,35 +40,7 @@ public class SavingsAccount extends Account{
     public SavingsAccount(Money balance, AccountHolder primaryOwner) {
         super(balance, primaryOwner);
     }
-    public SavingsAccount(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
-        super(balance, primaryOwner, secondaryOwner);
-    }
-//    public SavingsAccount(Money balance, AccountHolder primaryOwner, Money minimumBalance) {
-//        super(balance, primaryOwner);
-//        setBalance(minimumBalance);
-//    }
-//    public SavingsAccount(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, Money minimumBalance) {
-//        super(balance, primaryOwner, secondaryOwner);
-//        setBalance(minimumBalance);
-//    }
-//    public SavingsAccount(Money balance, AccountHolder primaryOwner, BigDecimal interestRate) {
-//        super(balance, primaryOwner);
-//        setInterestRate(interestRate);
-//    }
-//    public SavingsAccount(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, BigDecimal interestRate) {
-//        super(balance, primaryOwner, secondaryOwner);
-//        setInterestRate(interestRate);
-//    }
-//    public SavingsAccount(Money balance, AccountHolder primaryOwner, Money minimumBalance, BigDecimal interestRate) {
-//        super(balance, primaryOwner);
-//        setBalance(minimumBalance);
-//        setInterestRate(interestRate);
-//    }
-//    public SavingsAccount(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, Money minimumBalance, BigDecimal interestRate) {
-//        super(balance, primaryOwner, secondaryOwner);
-//        setBalance(minimumBalance);
-//        setInterestRate(interestRate);
-//    }
+
 
     @Override
     public void update() {

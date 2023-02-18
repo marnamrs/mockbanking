@@ -37,10 +37,14 @@ public interface AdminServiceInterface {
 
     //ACCOUNT MANAGEMENT
 
+    //Post: Accounts
     Account newCheckingAccount(AccountDTO accountDTO);
-    //Account newCheckingAccount(Money initialBalance, Long primaryId, Long secondaryId);
+    Account newSavingsAccount(AccountDTO accountDTO);
     Account setBalance(Long accountId, double newBalance);
+
+    //Get: Accounts
     List<Account> getAccounts();
     Account getAccountById(Long id);
+    Account getAccountByKey(String key);
 }
 

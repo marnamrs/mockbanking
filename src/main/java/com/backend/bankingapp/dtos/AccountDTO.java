@@ -1,9 +1,7 @@
 package com.backend.bankingapp.dtos;
 
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,16 +14,16 @@ import lombok.Setter;
 public class AccountDTO {
     private double doubleBalance;
     @Positive
+    @NotNull
+    @NotEmpty
     private Long primaryOwnerId;
     @Positive
     private Long secondaryOwnerId;
     //savingsAccount can be instantiated with minBalance < default && > 100
-    @DecimalMin(value = "100")
-    private double minBalance;
+
+    private Double minBalance;
     //savingsAccount can be instantiated with intRate between 0-0.5 (default is 0.2)
-    @DecimalMax(value="0.5")
-    @PositiveOrZero
-    private double interestRateSavings;
+    private Double interestRateSavings;
 
 
     //checkingAccount, studentAccount, Savings(default)

@@ -1,4 +1,4 @@
-package com.backend.bankingapp.repositories;
+package com.backend.bankingapp.repositories.accountrepos;
 
 import com.backend.bankingapp.models.accounts.Account;
 import com.backend.bankingapp.models.users.AccountHolder;

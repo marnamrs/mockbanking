@@ -17,7 +17,11 @@ public class HashCreator {
     }
 
     public static String createAccountKey(){
+        //increase number
         long nextNum = accountNumber + 1;
+        //save new number
+        accountNumber = nextNum;
+        //convert to string and make it 8char in length
         String key = String.valueOf(nextNum);
         while(key.length()<accountNumLength){
             key = "0".concat(key);

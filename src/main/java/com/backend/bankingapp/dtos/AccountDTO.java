@@ -22,10 +22,10 @@ public class AccountDTO {
     //savingsAccount can be instantiated with minBalance < default && > 100
     @DecimalMin(value = "100")
     private double minBalance;
+    //savingsAccount can be instantiated with intRate between 0-0.5 (default is 0.2)
     @DecimalMax(value="0.5")
     @PositiveOrZero
     private double interestRateSavings;
-
 
 
     //checkingAccount, studentAccount, Savings(default)
@@ -45,12 +45,6 @@ public class AccountDTO {
         setMinBalance(minBalance);
         setInterestRateSavings(interestRateSavings);
     }
-//    public AccountDTO(double doubleBalance, Long primaryOwnerId, Long secondaryOwnerId, double minBalance, double interestRateSavings) {
-//        setDoubleBalance(doubleBalance);
-//        setPrimaryOwnerId(primaryOwnerId);
-//        setSecondaryOwnerId(secondaryOwnerId);
-//        setMinBalance(minBalance);
-//        setInterestRateSavings(interestRateSavings);
-//    }
+
 
 }

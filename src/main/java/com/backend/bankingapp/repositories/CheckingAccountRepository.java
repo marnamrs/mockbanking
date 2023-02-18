@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface CheckingAccountRepository extends JpaRepository<CheckingAccount, Long> {
     Optional<CheckingAccount> findById(Long id);
+    Optional<CheckingAccount> findByAccountKey(String accountKey);
 }

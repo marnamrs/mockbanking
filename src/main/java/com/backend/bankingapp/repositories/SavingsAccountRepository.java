@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface SavingsAccountRepository extends JpaRepository<SavingsAccount, Long> {
     Optional<SavingsAccount> findById(Long id);
     Optional<SavingsAccount> findByAccountKey(String accountKey);
-    //TODO add findByAccountKey() to all account repositories
+
 }

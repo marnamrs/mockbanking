@@ -55,6 +55,7 @@ public class AccountHolderController {
     }
 
     //POST
+
     //TODO add makeTransfer endpoint for AccountHolder
 
     //To make endpoint available, uncomment and check instructions on security config file:

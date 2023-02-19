@@ -1,7 +1,6 @@
 package com.backend.bankingapp.services.impl;
 
 import com.backend.bankingapp.dtos.ExternalTransactionDTO;
-import com.backend.bankingapp.dtos.TransactionDTO;
 import com.backend.bankingapp.models.accounts.Account;
 import com.backend.bankingapp.models.accounts.CheckingAccount;
 import com.backend.bankingapp.models.accounts.SavingsAccount;
@@ -78,7 +77,6 @@ public class ExternalService {
 
             //verify receiver account exists by id
             Long receiverId = transactionDTO.getReceiverAccountId();
-            String receiverKey = transactionDTO.getReceiverAccountKey();
             if(accountRepository.findAccountById(receiverId).isPresent()){
                 log.info("Valid account Id");
                 Account account = accountRepository.findAccountById(receiverId).get();
@@ -98,10 +96,12 @@ public class ExternalService {
                         if(acc.getId() == checkingAccountRepository.findByAccountKey(key).get().getId()){ keyMatch = true;}
                     }
                     if(account.getType().equals(Type.STUDENT) && studentAccountRepository.findByAccountKey(key).isPresent()){
+                        assert account instanceof StudentAccount;
                         StudentAccount acc2 = (StudentAccount) account;
                         if(acc2.getId() == studentAccountRepository.findByAccountKey(key).get().getId()){ keyMatch = true;}
                     }
                     if(account.getType().equals(Type.SAVINGS) && savingsAccountRepository.findByAccountKey(key).isPresent()){
+                        assert account instanceof SavingsAccount;
                         SavingsAccount acc3 = (SavingsAccount) account;
                         if(acc3.getId() == savingsAccountRepository.findByAccountKey(key).get().getId()){ keyMatch = true;}
                     }

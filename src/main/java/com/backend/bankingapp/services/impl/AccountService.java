@@ -71,9 +71,31 @@ public class AccountService {
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Transaction not possible: account/s are frozen.");
     }
 
-    public Transaction createExternalTransaction(ExternalTransactionDTO transactionDTO, Account receiver){
-        //TODO add createTransaction (External version) in AccService
-        return null;
+    public Transaction createExternalTransaction(ExternalTransactionDTO transactionDTO, Account account){
+        //verify accounts status is Active
+        if(account.getStatus().equals(Status.ACTIVE)){
+            BigDecimal transactionAmount = BigDecimal.valueOf(transactionDTO.getAmount());
+            Transaction transaction = new Transaction(account, new Money(transactionAmount));
+            //verify if potential fraud
+            Boolean isFraudulent = verifyFraud(transaction, account);
+            if(!isFraudulent){
+                //check sign of transaction
+                if(transactionDTO.getAmount() < 0){
+                    BigDecimal accountFunds = account.getBalance().getAmount();
+                    //subtraction of funds: requires sufficient funds verification
+                    if(accountFunds.compareTo(transactionAmount)>0){
+                        //all checks passed: execute
+                        return executeTransaction(transaction, account);
+                    }
+                    throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Transaction not possible: insufficient funds.");
+                }
+                //addition of funds does not require sufficient funds verification
+                log.info("Executing transaction {}", transaction.getId());
+                return executeTransaction(transaction, account);
+            }
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Transaction not possible: potential fraudulent activity detected.");
+        }
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Transaction not possible: account is frozen.");
     }
 
     private Transaction executeTransaction(Transaction transaction, Account originator, Account receiver){
@@ -112,28 +134,72 @@ public class AccountService {
         return transaction;
     }
 
+    private Transaction executeTransaction(Transaction transaction, Account account){
+        log.info("Executing transaction by third party");
 
-    private Boolean verifyFraud(Transaction transaction, Account originator) {
+        Long accountId = account.getId();
+        BigDecimal prevBalance = account.getBalance().getAmount();
+        BigDecimal transactionAmount = transaction.getAmount().getAmount();
+
+        //calculate new balance
+        BigDecimal postBalance = prevBalance.add(transactionAmount);
+        //set new balance
+        account.setBalance(new Money(postBalance));
+        //save to database
+        transactionRepository.save(transaction);
+        accountRepository.save(account);
+
+        //apply penaltyFee if necessary for classes with minBalance when detracting funds
+        if(prevBalance.compareTo(postBalance)>0){
+            if(checkingAccountRepository.findById(accountId).isPresent()){
+                CheckingAccount acc = checkingAccountRepository.findById(accountId).get();
+                acc.verifyPenaltyFee(prevBalance, postBalance);
+                accountRepository.save(acc);
+            }
+            if(savingsAccountRepository.findById(accountId).isPresent()){
+                SavingsAccount acc = savingsAccountRepository.findById(accountId).get();
+                acc.verifyPenaltyFee(prevBalance, postBalance);
+                accountRepository.save(acc);
+            }
+        }
+        return transaction;
+    }
+
+    private Boolean verifyFraud(Transaction transaction, Account account) {
         // Fraud case: >2 transactions within a 1-second period
         boolean isFraudulent = false;
 
-        //get all account transactions as originator
-        List<Transaction> previousTransactions = originator.getSentTransactions();
+        //get all transactions
+        List<Transaction> previousSentTransactions = account.getSentTransactions();
+        List<Transaction> previousReceivedTransactions = account.getSentTransactions();
 
-        //check for fraud if account transactions > 1
-        if(previousTransactions.size()>1){
-            LocalDateTime lastTransferTime = previousTransactions.get(previousTransactions.size()-1).getCreationDate();
+        //check for fraud if account list of transactions > 1
+        if(previousSentTransactions.size()>1){
+            //get time of last transaction
+            LocalDateTime lastTransferTime = previousSentTransactions.get(previousSentTransactions.size()-1).getCreationDate();
+            //get time of current transaction
             LocalDateTime currentTransferTime = transaction.getCreationDate();
             LocalDateTime thisTransferMinusOneSec = currentTransferTime.minusSeconds(1);
             //true if last transfer was less than 1'' before current transfer
-            isFraudulent = lastTransferTime.isAfter(thisTransferMinusOneSec);
+            if(lastTransferTime.isAfter(thisTransferMinusOneSec)){
+                isFraudulent = true;
+            }
+        }
+        if(previousReceivedTransactions.size()>1){
+            LocalDateTime lastTransferTime = previousReceivedTransactions.get(previousReceivedTransactions.size()-1).getCreationDate();
+            LocalDateTime currentTransferTime = transaction.getCreationDate();
+            LocalDateTime thisTransferMinusOneSec = currentTransferTime.minusSeconds(1);
+            //true if last transfer was less than 1'' before current transfer
+            if(lastTransferTime.isAfter(thisTransferMinusOneSec)){
+                isFraudulent = true;
+            }
         }
 
         //if isFraudulent == true, freeze account
         if(isFraudulent){
-            log.info("Fraudulent activity detected: account {} status set to Frozen", originator.getId());
-            originator.setStatus(Status.FROZEN);
-            accountRepository.save(originator);
+            log.info("Fraudulent activity detected: account {} status set to Frozen", account.getId());
+            account.setStatus(Status.FROZEN);
+            accountRepository.save(account);
         }
         return isFraudulent;
     }

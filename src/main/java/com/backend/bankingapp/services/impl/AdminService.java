@@ -9,10 +9,7 @@ import com.backend.bankingapp.models.accounts.StudentAccount;
 import com.backend.bankingapp.models.users.*;
 import com.backend.bankingapp.models.utils.Money;
 import com.backend.bankingapp.models.utils.UserFactory;
-import com.backend.bankingapp.repositories.accountrepos.AccountRepository;
-import com.backend.bankingapp.repositories.accountrepos.CheckingAccountRepository;
-import com.backend.bankingapp.repositories.accountrepos.SavingsAccountRepository;
-import com.backend.bankingapp.repositories.accountrepos.StudentAccountRepository;
+import com.backend.bankingapp.repositories.accountrepos.*;
 import com.backend.bankingapp.repositories.usersrepos.RoleRepository;
 import com.backend.bankingapp.repositories.usersrepos.ThirdPartyRepository;
 import com.backend.bankingapp.repositories.usersrepos.UserRepository;
@@ -41,17 +38,17 @@ import java.util.List;
 @Slf4j
 public class AdminService implements AdminServiceInterface, UserDetailsService {
 
-    //Utils
+    // Utils
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private RoleRepository roleRepository;
-    //Users
+    // Users
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private ThirdPartyRepository thirdPartyRepository;
-    //Accounts
+    // Accounts
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
@@ -60,6 +57,9 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
     private StudentAccountRepository studentAccountRepository;
     @Autowired
     private SavingsAccountRepository savingsAccountRepository;
+    @Autowired
+    private CreditCardRepository creditCardRepository;
+
 
     /*
     [ USER MANAGEMENT: POST ]
@@ -262,8 +262,8 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
                     account.setMinimumBalance(minBalance);
                     log.info("Added non-default minBalance to SavingsAccount");
                 }
-                if(accountDTO.getInterestRateSavings() != null && accountDTO.getInterestRateSavings()<0.5 && accountDTO.getInterestRateSavings()>0){
-                    BigDecimal rate = BigDecimal.valueOf(accountDTO.getInterestRateSavings());
+                if(accountDTO.getInterestRate() != null && accountDTO.getInterestRate()<0.5 && accountDTO.getInterestRate()>0){
+                    BigDecimal rate = BigDecimal.valueOf(accountDTO.getInterestRate());
                     account.setInterestRate(rate);
                     log.info("Added non-default interestRate to SavingsAccount");
                 }
@@ -297,8 +297,12 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
                 acc.verifyPenaltyFee(prevBalance, postBalance);
                 account = acc;
             }
+            if(savingsAccountRepository.findById(accountId).isPresent()){
+                SavingsAccount acc = savingsAccountRepository.findById(accountId).get();
+                acc.verifyPenaltyFee(prevBalance, postBalance);
+                account = acc;
+            }
             return account;
-            //TODO add penaltyFee check for Savings
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
     }
@@ -330,7 +334,6 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
         if(savingsAccountRepository.findByAccountKey(key).isPresent()){
             return savingsAccountRepository.findByAccountKey(key).get();
         }
-        //TODO add find creditCard by key
         //if nothing was returned during checks:
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Key not found");
     }

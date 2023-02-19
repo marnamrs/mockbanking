@@ -15,10 +15,10 @@ import lombok.Setter;
 public class ExternalTransactionDTO {
     @NotNull
     @Positive
-    private Long beneficiaryAccountId;
+    private Long receiverAccountId;
     @NotNull
     @NotEmpty
-    private String beneficiaryKey;
+    private String receiverAccountKey;
     @NotNull
     private double amount;
 }

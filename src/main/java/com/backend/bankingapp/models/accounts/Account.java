@@ -3,7 +3,6 @@ package com.backend.bankingapp.models.accounts;
 import com.backend.bankingapp.models.users.AccountHolder;
 import com.backend.bankingapp.models.utils.Money;
 import com.backend.bankingapp.models.utils.Transaction;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,7 +35,7 @@ public abstract class Account {
     private AccountHolder secondaryOwner;
     @OneToMany(mappedBy = "originator")
     private List<Transaction> expenseTransactions;
-    @OneToMany(mappedBy = "beneficiary")
+    @OneToMany(mappedBy = "receiver")
     private List<Transaction> incomeTransactions;
     @Embedded
     @AttributeOverrides({

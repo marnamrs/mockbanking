@@ -5,6 +5,7 @@ import com.backend.bankingapp.models.accounts.Account;
 import com.backend.bankingapp.models.users.User;
 import com.backend.bankingapp.repositories.usersrepos.UserRepository;
 import com.backend.bankingapp.services.impl.AccountHolderService;
+import com.backend.bankingapp.services.impl.AccountService;
 import com.backend.bankingapp.services.interfaces.AdminServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,8 @@ public class AccountHolderController {
     @Autowired
     private AccountHolderService accountHolderService;
     @Autowired
-    private UserRepository userRepository;
+    private AccountService accountService;
+
 
     //GET: User info
     @GetMapping("/info")
@@ -50,12 +52,12 @@ public class AccountHolderController {
     }
 
     //POST
-    //TODO add make transfer from account
+    //TODO add makeTransfer endpoint for AccountHolder
 
-    //To make endpoint available, check instructions on security config file
-    @PostMapping("/client/new-client")
-    @ResponseStatus(HttpStatus.CREATED)
-    public User createClient(@RequestBody UserDTO userDTO) {
-        return adminService.createClient(userDTO);
-    }
+    //To make endpoint available, uncomment and check instructions on security config file:
+
+    // @PostMapping("/client/new-client")
+    // @ResponseStatus(HttpStatus.CREATED)
+    // public User createClient(@RequestBody UserDTO userDTO) {
+    //     return adminService.createClient(userDTO); }
 }

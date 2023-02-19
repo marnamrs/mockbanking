@@ -18,10 +18,10 @@ public class TransactionDTO {
     private Long originatorAccountId;
     @NotNull
     @NotEmpty
-    private String beneficiaryOwner;
+    private String receiverAccountOwner;
     @NotNull
     @Positive
-    private Long beneficiaryAccountId;
+    private Long receiverAccountId;
     @NotNull
     private double amount;
 }

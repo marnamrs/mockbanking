@@ -1,14 +1,12 @@
 package com.backend.bankingapp.models.utils;
 
 import com.backend.bankingapp.models.accounts.Account;
-import com.backend.bankingapp.models.accounts.CheckingAccount;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -24,15 +22,23 @@ public class Transaction {
     @ManyToOne
     private Account originator;
     @ManyToOne
-    private Account beneficiary;
+    private Account receiver;
     @Embedded
     private Money amount;
 
     private LocalDateTime executionDate;
 
-    public Transaction(Account originator, Account beneficiary, Money amount){
+    //internal Transactions
+    public Transaction(Account originator, Account receiver, Money amount){
         setOriginator(originator);
-        setBeneficiary(beneficiary);
+        setReceiver(receiver);
+        setAmount(amount);
+        setExecutionDate();
+    }
+
+    //ThirdParty Transactions
+    public Transaction(Account receiver, Money amount){
+        setReceiver(receiver);
         setAmount(amount);
         setExecutionDate();
     }

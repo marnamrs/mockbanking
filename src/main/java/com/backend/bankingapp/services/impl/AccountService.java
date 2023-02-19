@@ -1,12 +1,10 @@
 package com.backend.bankingapp.services.impl;
 
+import com.backend.bankingapp.dtos.ExternalTransactionDTO;
 import com.backend.bankingapp.dtos.TransactionDTO;
 import com.backend.bankingapp.models.accounts.Account;
 import com.backend.bankingapp.models.utils.Transaction;
-import com.backend.bankingapp.repositories.accountrepos.AccountRepository;
-import com.backend.bankingapp.repositories.accountrepos.CheckingAccountRepository;
-import com.backend.bankingapp.repositories.accountrepos.SavingsAccountRepository;
-import com.backend.bankingapp.repositories.accountrepos.StudentAccountRepository;
+import com.backend.bankingapp.repositories.accountrepos.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +22,8 @@ public class AccountService {
     private StudentAccountRepository studentAccountRepository;
     @Autowired
     private SavingsAccountRepository savingsAccountRepository;
+    @Autowired
+    private CreditCardRepository creditCardRepository;
 
     //update: : apply any pending fees/interests
     public void update(Account account){
@@ -42,14 +42,19 @@ public class AccountService {
     }
 
     public Transaction createTransaction(TransactionDTO transactionDTO) {
-        //TODO createTransaction method in AccountService
+        //TODO add createTransaction in AccService
         //fetch info from DTO and create Transaction
         // call service method executeTransaction()
         // then return executed Transaction
         return null;
     }
 
-    //TODO create executeTransaction method in AccService
+    public Transaction createExternalTransaction(ExternalTransactionDTO transactionDTO){
+        //TODO add createTransaction (External version) in AccService
+        return null;
+    }
+
+    //TODO add executeTransaction method in AccService
     //executeTransaction(Transaction transaction)
     //update originator and beneficiary
     //get originator initial balance

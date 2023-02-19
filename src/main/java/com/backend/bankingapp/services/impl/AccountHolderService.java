@@ -94,7 +94,7 @@ public class AccountHolderService {
         return sum;
     }
 
-    //TODO add makerTransaction() for AccountHolders
+    //TODO add makeTransaction() for AccountHolders calling AccService
     //should verify user owns originator account
     //should call createTransaction from accountservice
 

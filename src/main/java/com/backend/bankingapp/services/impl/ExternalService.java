@@ -52,17 +52,14 @@ public class ExternalService {
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied.");
     }
 
-    //TODO complete transaction method for Ext
+    //TODO review makeTransaction() for ThirdParty calling AccService
     public String makeTransaction(String userKey, TransactionDTO transactionDTO) {
-        String message = null;
+        log.info("Verifying external party access key");
         if(verifyKey(userKey)){
+            log.info("Successful access key verification");
             accountService.createTransaction(transactionDTO);
-            // find account by accountkey
-            // increase or decrease by amount
-        } else {
-            message = "Invalid access key.";
-        };
-        return message;
+        }
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied.");
     }
 
 

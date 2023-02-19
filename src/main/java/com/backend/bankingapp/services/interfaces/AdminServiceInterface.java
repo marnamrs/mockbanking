@@ -40,6 +40,7 @@ public interface AdminServiceInterface {
     //Post: Accounts
     Account newCheckingAccount(AccountDTO accountDTO);
     Account newSavingsAccount(AccountDTO accountDTO);
+    Account newCreditCard(AccountDTO accountDTO);
     Account setBalance(Long accountId, double newBalance);
 
     //Get: Accounts

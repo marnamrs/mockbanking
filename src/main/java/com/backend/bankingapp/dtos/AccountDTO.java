@@ -24,6 +24,7 @@ public class AccountDTO {
     //savingsAccount can be instantiated with intRate between 0-0.5 (default is 0.0025)
     //creditCards can be instantiated with intRate between 0.1-0.2 (default is 0.2)
     private Double interestRate;
+    //creditCards can be instantiated with creditLimit between 100-100.000 (default is 100)
     private Double creditLimit;
 
 

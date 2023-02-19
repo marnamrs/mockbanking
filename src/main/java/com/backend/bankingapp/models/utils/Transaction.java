@@ -2,6 +2,7 @@ package com.backend.bankingapp.models.utils;
 
 import com.backend.bankingapp.models.accounts.Account;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,33 +25,34 @@ public class Transaction {
     @ManyToOne
     private Account receiver;
     @Embedded
+    @Positive
     private Money amount;
 
-    private LocalDateTime executionDate;
+    private LocalDateTime creationDate;
 
     //internal Transactions
     public Transaction(Account originator, Account receiver, Money amount){
         setOriginator(originator);
         setReceiver(receiver);
         setAmount(amount);
-        setExecutionDate();
+        setCreationDate();
     }
 
     //ThirdParty Transactions
     public Transaction(Account receiver, Money amount){
         setReceiver(receiver);
         setAmount(amount);
-        setExecutionDate();
+        setCreationDate();
     }
 
-    public void setExecutionDate(){
+    public void setCreationDate(){
         //default: set according to CET timezone
         ZoneId zone = ZoneId.of("Europe/Madrid");
-        executionDate = LocalDateTime.now(zone);
+        creationDate = LocalDateTime.now(zone);
     }
-    public void setExecutionDate(LocalDateTime date){
+    public void setCreationDate(LocalDateTime date){
         //override: set given date
-        this.executionDate = date;
+        this.creationDate = date;
     }
 
 }

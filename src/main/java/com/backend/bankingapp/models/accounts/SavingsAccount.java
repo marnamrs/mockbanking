@@ -34,8 +34,7 @@ public class SavingsAccount extends Account{
     @DecimalMax(value="0.5")
     @PositiveOrZero
     private BigDecimal interestRate = new BigDecimal("0.0025");
-    @Enumerated(EnumType.STRING)
-    private Status status = Status.ACTIVE;
+
 
     public SavingsAccount(Money balance, AccountHolder primaryOwner) {
         super(balance, primaryOwner);

@@ -36,8 +36,7 @@ public class CheckingAccount extends Account {
             @AttributeOverride(name="amount", column = @Column(name = "monthly_fee_amount")),
     })
     private Money monthlyFee = new Money(new BigDecimal("12"));
-    @Enumerated(EnumType.STRING)
-    private Status status = Status.ACTIVE;
+
 
     public CheckingAccount(Money balance, AccountHolder primaryOwner) {
         super(balance, primaryOwner);

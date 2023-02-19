@@ -2,10 +2,7 @@ package com.backend.bankingapp.services.impl;
 
 import com.backend.bankingapp.dtos.AccountDTO;
 import com.backend.bankingapp.dtos.UserDTO;
-import com.backend.bankingapp.models.accounts.Account;
-import com.backend.bankingapp.models.accounts.CheckingAccount;
-import com.backend.bankingapp.models.accounts.SavingsAccount;
-import com.backend.bankingapp.models.accounts.StudentAccount;
+import com.backend.bankingapp.models.accounts.*;
 import com.backend.bankingapp.models.users.*;
 import com.backend.bankingapp.models.utils.Money;
 import com.backend.bankingapp.models.utils.UserFactory;
@@ -278,7 +275,47 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User/AccountHolder not found");
     }
     //Create: CreditCard
-    //TODO add newCreditCard()
+    public Account newCreditCard(AccountDTO accountDTO){
+        //verify if user exists
+        Long userId = accountDTO.getPrimaryOwnerId();
+
+        if(userRepository.findUserById(userId).isPresent()){
+
+            //verify user is AccountHolder type
+            String className = "com.backend.bankingapp.models.users.AccountHolder";
+            if(userRepository.findUserById(userId).get().getClass().getName().equals(className)){
+
+                //create account
+                AccountHolder primary = (AccountHolder) userRepository.findUserById(userId).get();
+                double initialBalance = accountDTO.getDoubleBalance();
+                Money balance = new Money(new BigDecimal(initialBalance));
+
+                log.info("Creating new CreditCard of user {}", primary.getName());
+                CreditCard account = new CreditCard(balance, primary);
+
+                //check for optional values and set if informed and valid
+                if(accountDTO.getSecondaryOwnerId() != null && userRepository.findUserById(accountDTO.getSecondaryOwnerId()).isPresent() && userRepository.findUserById(userId).get().getClass().getName().equals(className)){
+                    AccountHolder secondary = (AccountHolder) userRepository.findUserById(accountDTO.getSecondaryOwnerId()).get();
+                    account.setSecondaryOwner(secondary);
+                    log.info("Added secondaryOwner to CreditCard");
+                }
+                if(accountDTO.getInterestRate() != null && accountDTO.getInterestRate()<0.2 && accountDTO.getInterestRate()>0.1){
+                    BigDecimal rate = BigDecimal.valueOf(accountDTO.getInterestRate());
+                    account.setInterestRate(rate);
+                    log.info("Added non-default interestRate {} to CreditCard", rate);
+                }
+                if(accountDTO.getCreditLimit() != null && accountDTO.getCreditLimit()<100000 && accountDTO.getCreditLimit()>100){
+                    BigDecimal limit = BigDecimal.valueOf(accountDTO.getCreditLimit());
+                    account.setCreditLimit(new Money(limit));
+                    log.info("Added non-default creditLimit {} to CreditCard", limit);
+                }
+                //save account to database
+                log.info("Saving new CreditCard {} to the database", account.getId());
+                return accountRepository.save(account);
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User/AccountHolder not found");
+    }
 
 
     //Edit: Balance
@@ -295,18 +332,17 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
             if(checkingAccountRepository.findById(accountId).isPresent()){
                 CheckingAccount acc = checkingAccountRepository.findById(accountId).get();
                 acc.verifyPenaltyFee(prevBalance, postBalance);
-                account = acc;
+                accountRepository.save(acc);
             }
             if(savingsAccountRepository.findById(accountId).isPresent()){
                 SavingsAccount acc = savingsAccountRepository.findById(accountId).get();
                 acc.verifyPenaltyFee(prevBalance, postBalance);
-                account = acc;
+                accountRepository.save(acc);
             }
             return account;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
     }
-
 
 
     /*
@@ -337,4 +373,5 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
         //if nothing was returned during checks:
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Key not found");
     }
+
 }

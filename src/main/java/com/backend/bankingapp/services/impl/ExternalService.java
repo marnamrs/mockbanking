@@ -53,14 +53,14 @@ public class ExternalService {
     }
 
     //TODO review makeTransaction() for ThirdParty calling AccService
-    public String makeTransaction(String userKey, TransactionDTO transactionDTO) {
-        log.info("Verifying external party access key");
-        if(verifyKey(userKey)){
-            log.info("Successful access key verification");
-            accountService.createTransaction(transactionDTO);
-        }
-        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied.");
-    }
+//    public String makeTransaction(String userKey, TransactionDTO transactionDTO) {
+//        log.info("Verifying external party access key");
+//        if(verifyKey(userKey)){
+//            log.info("Successful access key verification");
+//            accountService.createTransaction(transactionDTO);
+//        }
+//        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied.");
+//    }
 
 
 }

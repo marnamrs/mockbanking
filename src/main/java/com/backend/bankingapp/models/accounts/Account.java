@@ -2,6 +2,7 @@ package com.backend.bankingapp.models.accounts;
 
 import com.backend.bankingapp.models.users.AccountHolder;
 import com.backend.bankingapp.models.utils.Money;
+import com.backend.bankingapp.models.utils.Status;
 import com.backend.bankingapp.models.utils.Transaction;
 import jakarta.persistence.*;
 import lombok.*;
@@ -43,6 +44,8 @@ public abstract class Account {
             @AttributeOverride(name="amount", column = @Column(name = "penalty_fee_amount")),
     })
     private Money penaltyFee = new Money(new BigDecimal("40"));
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.ACTIVE;
     //default DateTime
     private LocalDateTime creationDate = LocalDateTime.now();
     private LocalDateTime lastUpdated = LocalDateTime.now();

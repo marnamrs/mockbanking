@@ -6,6 +6,7 @@ import com.backend.bankingapp.models.users.User;
 import com.backend.bankingapp.repositories.usersrepos.UserRepository;
 import com.backend.bankingapp.services.impl.AccountHolderService;
 import com.backend.bankingapp.services.impl.AccountService;
+import com.backend.bankingapp.services.interfaces.AccountHolderServiceInterface;
 import com.backend.bankingapp.services.interfaces.AdminServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class AccountHolderController {
     @Autowired
     private AdminServiceInterface adminService;
     @Autowired
-    private AccountHolderService accountHolderService;
+    private AccountHolderServiceInterface accountHolderService;
     @Autowired
     private AccountService accountService;
 
@@ -40,11 +41,13 @@ public class AccountHolderController {
     public List<Account> getUserAccounts(Authentication user){
         return accountHolderService.getAccounts(user);
     }
+
     @GetMapping("/accounts/id")
     @ResponseStatus(HttpStatus.OK)
     public Account getUserAccount(Authentication user, @RequestParam Long accountId){
         return accountHolderService.getAccountById(user, accountId);
     }
+
     @GetMapping("/accounts/balance")
     @ResponseStatus(HttpStatus.OK)
     public BigDecimal getGlobalBalance(Authentication user){

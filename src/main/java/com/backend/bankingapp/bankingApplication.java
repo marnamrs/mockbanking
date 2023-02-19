@@ -46,7 +46,9 @@ public class bankingApplication {
             adminService.createExternal("External1");
 //            Add checkingAccount:
             adminService.newCheckingAccount(new AccountDTO(300, owner.getId()));
-            adminService.newCheckingAccount(new AccountDTO(300, owner2.getId()));
+            Account accTest = adminService.newCheckingAccount(new AccountDTO(300, owner2.getId()));
+
+//            System.out.println("TEST RETURN OF ACC CHECK:" + adminService.checkAccountType(accTest));
 
         };
     }

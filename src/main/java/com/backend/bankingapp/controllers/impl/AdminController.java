@@ -44,10 +44,10 @@ public class AdminController implements AdminControllerInterface {
     //GET: Accounts
     @GetMapping("/accounts")
     @ResponseStatus(HttpStatus.OK)
-    public List<Account> getAccounts(){return adminService.getAccounts();};
+    public List<Account> getAccounts(){ return adminService.getAccounts(); }
     @GetMapping("/accounts/id")
     @ResponseStatus(HttpStatus.OK)
-    public Account getAccountById(@RequestParam Long id){return adminService.getAccountById(id);};
+    public Account getAccountById(@RequestParam Long id){ return adminService.getAccountById(id); }
 
     //POST: Users
     @PostMapping("/users/add")
@@ -67,18 +67,17 @@ public class AdminController implements AdminControllerInterface {
     @PostMapping("/accounts/add/checking")
     @ResponseStatus(HttpStatus.CREATED)
     public Account createCheckingAccount(@RequestBody AccountDTO accountDTO) {
-        return null;
+        return adminService.newCheckingAccount(accountDTO);
     }
     @PostMapping("/accounts/add/savings")
     @ResponseStatus(HttpStatus.CREATED)
-    public Account createSavingsAccount() {
-        return null;
+    public Account createSavingsAccount(@RequestBody AccountDTO accountDTO) {
+        return adminService.newSavingsAccount(accountDTO);
     }
     @PostMapping("/accounts/add/credit")
     @ResponseStatus(HttpStatus.CREATED)
-    public Account createCreditCard() {
-        //TODO complete controller for createCreditCard()
-        return null;
+    public Account createCreditCard(@RequestBody AccountDTO accountDTO) {
+        return adminService.newCreditCard(accountDTO);
     }
 
     //POST: Accounts [Updating]

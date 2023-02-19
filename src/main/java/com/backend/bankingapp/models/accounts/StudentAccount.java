@@ -23,8 +23,7 @@ public class StudentAccount extends Account{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String accountKey = setAccountKey();
-    @Enumerated(EnumType.STRING)
-    private Status status = Status.ACTIVE;
+
 
     public StudentAccount(Money balance, AccountHolder primaryOwner) {
         super(balance, primaryOwner);

@@ -1,11 +1,14 @@
 package com.backend.bankingapp.services.impl;
 
+import com.backend.bankingapp.dtos.TransactionDTO;
 import com.backend.bankingapp.models.accounts.Account;
 import com.backend.bankingapp.models.users.AccountHolder;
 import com.backend.bankingapp.models.users.User;
+import com.backend.bankingapp.models.utils.Transaction;
 import com.backend.bankingapp.repositories.accountrepos.AccountRepository;
 import com.backend.bankingapp.repositories.usersrepos.RoleRepository;
 import com.backend.bankingapp.repositories.usersrepos.UserRepository;
+import com.backend.bankingapp.services.interfaces.AccountHolderServiceInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +24,7 @@ import java.util.stream.Stream;
 
 @Service
 @Slf4j
-public class AccountHolderService {
+public class AccountHolderService implements AccountHolderServiceInterface {
 
     @Autowired
     private UserRepository userRepository;
@@ -62,10 +65,8 @@ public class AccountHolderService {
             Long secondaryOwnerId = account.get().getSecondaryOwner().getId();
             //verify if user owns account
             if(Objects.equals(userId, primaryOwnerId) || Objects.equals(userId, secondaryOwnerId)){
-                //update account
-                accountService.update(account.get());
-                //return updated account
-                return accountRepository.findById(accountId).get();
+                //update account and return
+                return accountService.update(account.get());
             } else {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Permission denied.");
             }
@@ -92,6 +93,38 @@ public class AccountHolderService {
         }
         log.info("Global balance for user {} is {}", user.getPrincipal(), sum);
         return sum;
+    }
+
+    public Transaction newTransaction(Authentication user, TransactionDTO transactionDTO) {
+        log.info("Fetching user {} and transaction request", user.getPrincipal());
+        AccountHolder u = (AccountHolder) userRepository.findByUsername(String.valueOf(user.getPrincipal())).get();
+        Optional<Account> originator = accountRepository.findById(transactionDTO.getOriginatorAccountId());
+        Optional<Account> receiver = accountRepository.findById(transactionDTO.getReceiverAccountId());
+
+        //verify both accounts exist
+        if(originator.isPresent() && receiver.isPresent()){
+            log.info("Verifying ownership of originator account {}", originator.get().getId());
+            //verify user owns originator account
+            Long userId = u.getId();
+            Long primaryOwnerId = originator.get().getPrimaryOwner().getId();
+            Long secondaryOwnerId = originator.get().getSecondaryOwner().getId();
+            if(Objects.equals(userId, primaryOwnerId) || Objects.equals(userId, secondaryOwnerId)){
+                log.info("Ownership of originator account successfully verified.");
+                //update originator
+                Account updatedOriginator = accountService.update(originator.get());
+                /*Redirect to accountService.createTransaction() for account-side checks:
+                 * -- sufficient funds verification
+                 * -- valid amount verification
+                 * If all verifications are successful:
+                 * -- accountService.executeTransaction() will be called
+                 * -- executed Transaction object will be returned
+                */
+                return accountService.createTransaction(transactionDTO, updatedOriginator, receiver.get());
+
+            }
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Transaction not possible: failed authorization check.");
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction not possible: account/s not found.");
     }
 
     //TODO add makeTransaction() for AccountHolders calling AccService

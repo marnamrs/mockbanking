@@ -23,5 +23,7 @@ public class TransactionDTO {
     @Positive
     private Long receiverAccountId;
     @NotNull
+    @Positive
     private double amount;
+
 }

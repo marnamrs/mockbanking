@@ -12,16 +12,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class TransactionDTO {
-    @NotNull
-    @Positive
-    private Long originatorAccountId;
-    @NotNull
-    @NotEmpty
-    private String beneficiaryOwner;
+public class ExternalTransactionDTO {
     @NotNull
     @Positive
     private Long beneficiaryAccountId;
+    @NotNull
+    @NotEmpty
+    private String beneficiaryKey;
     @NotNull
     private double amount;
 }

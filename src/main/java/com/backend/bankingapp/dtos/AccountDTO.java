@@ -12,37 +12,27 @@ import lombok.Setter;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class AccountDTO {
+    @Positive
+    @NotNull
     private double doubleBalance;
     @Positive
     @NotNull
-    @NotEmpty
     private Long primaryOwnerId;
-    @Positive
     private Long secondaryOwnerId;
     //savingsAccount can be instantiated with minBalance < default && > 100
-
     private Double minBalance;
-    //savingsAccount can be instantiated with intRate between 0-0.5 (default is 0.2)
-    private Double interestRateSavings;
+    //savingsAccount can be instantiated with intRate between 0-0.5 (default is 0.0025)
+    //creditCards can be instantiated with intRate between 0.1-0.2 (default is 0.2)
+    private Double interestRate;
+    private Double creditLimit;
 
 
-    //checkingAccount, studentAccount, Savings(default)
+    //checkingAccount, studentAccount, Savings(default), creditCard(default)
     public AccountDTO(double doubleBalance, Long primaryOwnerId) {
         setDoubleBalance(doubleBalance);
         setPrimaryOwnerId(primaryOwnerId);
     }
-    public AccountDTO(double doubleBalance, Long primaryOwnerId, Long secondaryOwnerId) {
-        setDoubleBalance(doubleBalance);
-        setPrimaryOwnerId(primaryOwnerId);
-        setSecondaryOwnerId(secondaryOwnerId);
-    }
-    //saving accounts(non-default)
-    public AccountDTO(double doubleBalance, Long primaryOwnerId, double minBalance, double interestRateSavings) {
-        setDoubleBalance(doubleBalance);
-        setPrimaryOwnerId(primaryOwnerId);
-        setMinBalance(minBalance);
-        setInterestRateSavings(interestRateSavings);
-    }
+
 
 
 }

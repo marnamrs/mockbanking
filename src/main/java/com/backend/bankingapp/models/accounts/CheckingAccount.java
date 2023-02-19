@@ -4,6 +4,7 @@ import com.backend.bankingapp.models.users.AccountHolder;
 import com.backend.bankingapp.models.utils.HashCreator;
 import com.backend.bankingapp.models.utils.Money;
 import com.backend.bankingapp.models.utils.Status;
+import com.backend.bankingapp.models.utils.Type;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,11 +39,11 @@ public class CheckingAccount extends Account {
     private Money monthlyFee = new Money(new BigDecimal("12"));
 
 
-    public CheckingAccount(Money balance, AccountHolder primaryOwner) {
-        super(balance, primaryOwner);
+    public CheckingAccount(Money balance, AccountHolder primaryOwner, Type type) {
+        super(balance, primaryOwner, type);
     }
-    public CheckingAccount(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
-        super(balance, primaryOwner, secondaryOwner);
+    public CheckingAccount(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, Type type) {
+        super(balance, primaryOwner, secondaryOwner, type);
     }
 
 

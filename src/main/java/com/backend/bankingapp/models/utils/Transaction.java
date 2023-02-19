@@ -20,12 +20,21 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    /* when originator is informed (AccountHolder transactions):
+     * amount will always be positive
+     * amount will be detracted from originator
+     * amount will be added to receiver
+     */
     @ManyToOne
     private Account originator;
+    /* receiver is always informed (AccountHolder & External transactions).
+     * In External/ThirdParty transactions
+     * amount can be positive or negative
+     * amount will be added to or subtracted from receiver
+     */
     @ManyToOne
     private Account receiver;
     @Embedded
-    @Positive
     private Money amount;
 
     private LocalDateTime creationDate;

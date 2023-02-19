@@ -4,6 +4,7 @@ import com.backend.bankingapp.models.users.AccountHolder;
 import com.backend.bankingapp.models.utils.HashCreator;
 import com.backend.bankingapp.models.utils.Money;
 import com.backend.bankingapp.models.utils.Status;
+import com.backend.bankingapp.models.utils.Type;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -35,9 +36,8 @@ public class SavingsAccount extends Account{
     @PositiveOrZero
     private BigDecimal interestRate = new BigDecimal("0.0025");
 
-
-    public SavingsAccount(Money balance, AccountHolder primaryOwner) {
-        super(balance, primaryOwner);
+    public SavingsAccount(Money balance, AccountHolder primaryOwner, Type type) {
+        super(balance, primaryOwner, type);
     }
 
 

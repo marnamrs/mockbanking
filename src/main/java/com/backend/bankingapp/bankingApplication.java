@@ -45,7 +45,7 @@ public class bankingApplication {
 //            Add thirdParty:
             adminService.createExternal("External1");
 //            Add checkingAccount:
-            adminService.newCheckingAccount(new AccountDTO(300, owner.getId()));
+            adminService.newCheckingAccount(new AccountDTO(500, owner.getId()));
             Account accTest = adminService.newCheckingAccount(new AccountDTO(300, owner2.getId()));
 
 //            System.out.println("TEST RETURN OF ACC CHECK:" + adminService.checkAccountType(accTest));

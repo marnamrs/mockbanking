@@ -4,6 +4,7 @@ import com.backend.bankingapp.models.users.AccountHolder;
 import com.backend.bankingapp.models.utils.Money;
 import com.backend.bankingapp.models.utils.Status;
 import com.backend.bankingapp.models.utils.Transaction;
+import com.backend.bankingapp.models.utils.Type;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,10 +35,12 @@ public abstract class Account {
     private AccountHolder primaryOwner;
     @ManyToOne
     private AccountHolder secondaryOwner;
+    //Transactions as originator will always be expenses
     @OneToMany(mappedBy = "originator")
-    private List<Transaction> expenseTransactions;
+    private List<Transaction> sentTransactions;
+    //Transactions as receiver can be expenses or income
     @OneToMany(mappedBy = "receiver")
-    private List<Transaction> incomeTransactions;
+    private List<Transaction> receivedTransactions;
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name="currency", column = @Column(name = "penalty_fee_currency")),
@@ -46,28 +49,33 @@ public abstract class Account {
     private Money penaltyFee = new Money(new BigDecimal("40"));
     @Enumerated(EnumType.STRING)
     private Status status = Status.ACTIVE;
+    @Enumerated(EnumType.STRING)
+    private Type type;
     //default DateTime
     private LocalDateTime creationDate = LocalDateTime.now();
     private LocalDateTime lastUpdated = LocalDateTime.now();
 
 
-    public Account(Money balance){
+    public Account(Money balance, Type type){
         setBalance(balance);
         setCreationDate();
         setLastUpdated(creationDate);
+        setType(type);
     }
-    public Account(Money balance, AccountHolder primaryOwner){
+    public Account(Money balance, AccountHolder primaryOwner, Type type){
         setBalance(balance);
         setPrimaryOwner(primaryOwner);
         setCreationDate();
         setLastUpdated(creationDate);
+        setType(type);
     }
-    public Account(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner){
+    public Account(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, Type type){
         setBalance(balance);
         setPrimaryOwner(primaryOwner);
         setSecondaryOwner(secondaryOwner);
         setCreationDate();
         setLastUpdated(creationDate);
+        setType(type);
     }
 
 

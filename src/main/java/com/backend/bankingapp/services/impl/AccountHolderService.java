@@ -110,26 +110,24 @@ public class AccountHolderService implements AccountHolderServiceInterface {
             Long secondaryOwnerId = originator.get().getSecondaryOwner().getId();
             if(Objects.equals(userId, primaryOwnerId) || Objects.equals(userId, secondaryOwnerId)){
                 log.info("Ownership of originator account successfully verified.");
-                //update originator
-                Account updatedOriginator = accountService.update(originator.get());
-                /*Redirect to accountService.createTransaction() for account-side checks:
-                 * -- sufficient funds verification
-                 * -- valid amount verification
-                 * If all verifications are successful:
-                 * -- accountService.executeTransaction() will be called
-                 * -- executed Transaction object will be returned
-                */
-                return accountService.createTransaction(transactionDTO, updatedOriginator, receiver.get());
-
+                //verify receiver account owner matches given name
+                if(receiver.get().getPrimaryOwner().getName().equalsIgnoreCase(transactionDTO.getReceiverAccountOwner()) || receiver.get().getSecondaryOwner().getName().equalsIgnoreCase(transactionDTO.getReceiverAccountOwner())){
+                    //update originator
+                    Account updatedOriginator = accountService.update(originator.get());
+                    /*Redirect to accountService.createTransaction() for account-side checks:
+                     * -- sufficient funds verification
+                     * -- valid amount verification
+                     * If all verifications are successful:
+                     * -- accountService.executeTransaction() will be called
+                     * -- executed Transaction object will be returned
+                     */
+                    return accountService.createTransaction(transactionDTO, updatedOriginator, receiver.get());
+                }
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction not possible: receiver account information does not match provided recipient name.");
             }
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Transaction not possible: failed authorization check.");
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction not possible: account/s not found.");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction not possible: account/s id not found.");
     }
-
-    //TODO add makeTransaction() for AccountHolders calling AccService
-    //should verify user owns originator account
-    //should call createTransaction from accountservice
-
 
 }

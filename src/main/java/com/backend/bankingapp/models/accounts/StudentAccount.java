@@ -4,6 +4,7 @@ import com.backend.bankingapp.models.users.AccountHolder;
 import com.backend.bankingapp.models.utils.HashCreator;
 import com.backend.bankingapp.models.utils.Money;
 import com.backend.bankingapp.models.utils.Status;
+import com.backend.bankingapp.models.utils.Type;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.http.HttpStatus;
@@ -24,12 +25,11 @@ public class StudentAccount extends Account{
     private long id;
     private String accountKey = setAccountKey();
 
-
-    public StudentAccount(Money balance, AccountHolder primaryOwner) {
-        super(balance, primaryOwner);
+    public StudentAccount(Money balance, AccountHolder primaryOwner, Type type) {
+        super(balance, primaryOwner, type);
     }
-    public StudentAccount(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
-        super(balance, primaryOwner, secondaryOwner);
+    public StudentAccount(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, Type type) {
+        super(balance, primaryOwner, secondaryOwner, type);
     }
 
     @Override

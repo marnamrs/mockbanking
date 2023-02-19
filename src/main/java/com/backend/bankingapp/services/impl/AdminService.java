@@ -5,6 +5,7 @@ import com.backend.bankingapp.dtos.UserDTO;
 import com.backend.bankingapp.models.accounts.*;
 import com.backend.bankingapp.models.users.*;
 import com.backend.bankingapp.models.utils.Money;
+import com.backend.bankingapp.models.utils.Type;
 import com.backend.bankingapp.models.utils.UserFactory;
 import com.backend.bankingapp.repositories.accountrepos.*;
 import com.backend.bankingapp.repositories.usersrepos.RoleRepository;
@@ -203,7 +204,7 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
                 if(primary.getBirthDate().isAfter(twentyFourYearsAgo)){
                     log.info("User {} is eligible for StudentChecking", primary.getName());
                     log.info("Creating new StudentAccount of user {}", primary.getName());
-                    StudentAccount studentAcc = new StudentAccount(balance, primary);
+                    StudentAccount studentAcc = new StudentAccount(balance, primary, Type.STUDENT);
                     if(accountDTO.getSecondaryOwnerId() != null && userRepository.findUserById(accountDTO.getSecondaryOwnerId()).isPresent() && userRepository.findUserById(userId).get().getClass().getName().equals(className)){
                         AccountHolder secondary = (AccountHolder) userRepository.findUserById(accountDTO.getSecondaryOwnerId()).get();
                         studentAcc.setSecondaryOwner(secondary);
@@ -213,7 +214,7 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
                 }
 
                 log.info("Creating new CheckingAccount of user {}", primary.getName());
-                CheckingAccount account = new CheckingAccount(balance, primary);
+                CheckingAccount account = new CheckingAccount(balance, primary, Type.CHECKING);
                 if(accountDTO.getSecondaryOwnerId() != null && userRepository.findUserById(accountDTO.getSecondaryOwnerId()).isPresent() && userRepository.findUserById(userId).get().getClass().getName().equals(className)){
                     AccountHolder secondary = (AccountHolder) userRepository.findUserById(accountDTO.getSecondaryOwnerId()).get();
                     account.setSecondaryOwner(secondary);
@@ -245,7 +246,7 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
                 Money balance = new Money(new BigDecimal(initialBalance));
 
                 log.info("Creating new SavingsAccount of user {}", primary.getName());
-                SavingsAccount account = new SavingsAccount(balance, primary);
+                SavingsAccount account = new SavingsAccount(balance, primary, Type.SAVINGS);
 
                 //check for optional values and set if informed and valid
                 if(accountDTO.getSecondaryOwnerId() != null && userRepository.findUserById(accountDTO.getSecondaryOwnerId()).isPresent() && userRepository.findUserById(userId).get().getClass().getName().equals(className)){
@@ -291,7 +292,7 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
                 Money balance = new Money(new BigDecimal(initialBalance));
 
                 log.info("Creating new CreditCard of user {}", primary.getName());
-                CreditCard account = new CreditCard(balance, primary);
+                CreditCard account = new CreditCard(balance, primary, Type.CHECKING);
 
                 //check for optional values and set if informed and valid
                 if(accountDTO.getSecondaryOwnerId() != null && userRepository.findUserById(accountDTO.getSecondaryOwnerId()).isPresent() && userRepository.findUserById(userId).get().getClass().getName().equals(className)){

@@ -71,7 +71,7 @@ public class AccountService {
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Transaction not possible: account/s are frozen.");
     }
 
-    public Transaction createExternalTransaction(ExternalTransactionDTO transactionDTO){
+    public Transaction createExternalTransaction(ExternalTransactionDTO transactionDTO, Account receiver){
         //TODO add createTransaction (External version) in AccService
         return null;
     }
@@ -118,7 +118,7 @@ public class AccountService {
         boolean isFraudulent = false;
 
         //get all account transactions as originator
-        List<Transaction> previousTransactions = originator.getExpenseTransactions();
+        List<Transaction> previousTransactions = originator.getSentTransactions();
 
         //check for fraud if account transactions > 1
         if(previousTransactions.size()>1){
@@ -138,7 +138,7 @@ public class AccountService {
         return isFraudulent;
     }
 
-    private String checkAccountType(Account originator) {
+    public String checkAccountType(Account account) {
         CheckingAccount checkingAccount = new CheckingAccount();
         StudentAccount studentAccount = new StudentAccount();
         SavingsAccount savingsAccount = new SavingsAccount();
@@ -148,7 +148,7 @@ public class AccountService {
         String savingsType = savingsAccount.getClass().getTypeName();
         String creditType = creditCard.getClass().getTypeName();
 
-        String accountType = originator.getClass().getTypeName();
+        String accountType = account.getClass().getTypeName();
 
         if (accountType.equals(checkingType)) {
             return checkingType;

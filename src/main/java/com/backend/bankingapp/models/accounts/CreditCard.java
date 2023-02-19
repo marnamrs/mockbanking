@@ -2,6 +2,7 @@ package com.backend.bankingapp.models.accounts;
 
 import com.backend.bankingapp.models.users.AccountHolder;
 import com.backend.bankingapp.models.utils.Money;
+import com.backend.bankingapp.models.utils.Type;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -37,7 +38,7 @@ public class CreditCard extends Account {
     @DecimalMin(value = "0.1")
     private BigDecimal interestRate = new BigDecimal("0.2"); //annual
 
-    public CreditCard(Money balance, AccountHolder primaryOwner){ super(balance, primaryOwner); }
+    public CreditCard(Money balance, AccountHolder primaryOwner, Type type){ super(balance, primaryOwner, type); }
 
     public void update() {
         //interestRate: apply monthly

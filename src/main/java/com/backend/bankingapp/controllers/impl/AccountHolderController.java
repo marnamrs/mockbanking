@@ -1,8 +1,10 @@
 package com.backend.bankingapp.controllers.impl;
 
+import com.backend.bankingapp.dtos.TransactionDTO;
 import com.backend.bankingapp.dtos.UserDTO;
 import com.backend.bankingapp.models.accounts.Account;
 import com.backend.bankingapp.models.users.User;
+import com.backend.bankingapp.models.utils.Transaction;
 import com.backend.bankingapp.repositories.usersrepos.UserRepository;
 import com.backend.bankingapp.services.impl.AccountHolderService;
 import com.backend.bankingapp.services.impl.AccountService;
@@ -56,7 +58,11 @@ public class AccountHolderController {
 
     //POST
 
-    //TODO add makeTransfer endpoint for AccountHolder
+    @PostMapping("/transaction/new")
+    @ResponseStatus(HttpStatus.OK)
+    public Transaction newTransaction(Authentication user, @RequestBody TransactionDTO transactionDTO){
+        return accountHolderService.newTransaction(user, transactionDTO);
+    }
 
     //To make endpoint available, uncomment and check instructions on security config file:
 

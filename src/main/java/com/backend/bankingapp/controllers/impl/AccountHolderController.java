@@ -32,8 +32,7 @@ public class AccountHolderController {
     //GET: User info
     @GetMapping("/info")
     @ResponseStatus(HttpStatus.OK)
-    public User getUserInfo(Authentication user){
-        //Authentication user --> username + role
+    public User getOwnUserInfo(Authentication user){
         return accountHolderService.getUserInfo(user);
     }
 
@@ -61,7 +60,7 @@ public class AccountHolderController {
     @PostMapping("/transaction/new")
     @ResponseStatus(HttpStatus.OK)
     public Transaction newTransaction(Authentication user, @RequestBody TransactionDTO transactionDTO){
-        return accountHolderService.newTransaction(user, transactionDTO);
+        return accountHolderService.newTransaction((String) user.getPrincipal(), transactionDTO);
     }
 
     //To make endpoint available, uncomment and check instructions on security config file:

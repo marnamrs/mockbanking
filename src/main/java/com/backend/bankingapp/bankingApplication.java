@@ -48,7 +48,8 @@ public class bankingApplication {
              * To generate initial admin:
              * adminService.createUser(new UserDTO({name}, {username}, {password},"ROLE_ADMIN"));
              * */
-
+            adminService.createUser(new UserDTO("Admin", "admin", "1234","ROLE_ADMIN"));
+            adminService.createClient(new UserDTO("Client Client", "client", "1234", "ROLE_CLIENT","01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, null, null, null, 0, 0));
         };
     }
 

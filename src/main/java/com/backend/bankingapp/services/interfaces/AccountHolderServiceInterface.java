@@ -20,5 +20,5 @@ public interface AccountHolderServiceInterface {
     //GET: global balance (all accounts)
     BigDecimal getBalance(Authentication user);
     //POST: new transaction
-    Transaction newTransaction(Authentication user, TransactionDTO transactionDTO);
+    Transaction newTransaction(String username, TransactionDTO transactionDTO);
 }

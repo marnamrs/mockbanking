@@ -11,6 +11,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,11 +37,11 @@ public abstract class Account {
     @ManyToOne
     private AccountHolder secondaryOwner;
     //Transactions as originator will always be expenses
-    @OneToMany(mappedBy = "originator")
-    private List<Transaction> sentTransactions;
+    @OneToMany(mappedBy = "originator", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    private List<Transaction> sentTransactions = new ArrayList<>();
     //Transactions as receiver can be expenses or income
-    @OneToMany(mappedBy = "receiver")
-    private List<Transaction> receivedTransactions;
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    private List<Transaction> receivedTransactions = new ArrayList<>();
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name="currency", column = @Column(name = "penalty_fee_currency")),
@@ -92,6 +93,10 @@ public abstract class Account {
     public void setLastUpdated(LocalDateTime date){
         //override: set given date
         this.lastUpdated = date;
+    }
+
+    public void setSentTransactions(){
+
     }
 
     //subclasses need to define update method for fees and interests

@@ -51,11 +51,14 @@ public class AccountService {
 
     public Transaction createTransaction(TransactionDTO transactionDTO, Account originator, Account receiver) {
         //verify accounts status is Active
+        log.info("Executing transaction between account {} and {}", originator.getId(), receiver.getId());
         if(originator.getStatus() == Status.ACTIVE && receiver.getStatus() == Status.ACTIVE){
+            log.info("Executing transation: verified both accounts are Active");
             BigDecimal originatorFunds = originator.getBalance().getAmount();
             BigDecimal transactionAmount = BigDecimal.valueOf(transactionDTO.getAmount());
             //verify sufficient funds (balance>amount)
             if(originatorFunds.compareTo(transactionAmount)>0){
+                log.info("Verified sufficient funds.");
                 Transaction transaction = new Transaction(originator, receiver, new Money(transactionAmount));
                 //verify if potential fraud
                 Boolean isFraudulent = verifyFraud(transaction, originator);
@@ -113,23 +116,28 @@ public class AccountService {
         //set new balances
         originator.setBalance(new Money(postBalanceOriginator));
         receiver.setBalance(new Money(postBalanceReceiver));
+
+
         //save to database
-        transactionRepository.save(transaction);
+        Transaction saved = transactionRepository.save(transaction);
+        originator.getSentTransactions().add(saved);
+        receiver.getReceivedTransactions().add(saved);
         accountRepository.save(originator);
         accountRepository.save(receiver);
+
         log.info("Transaction saved to database.");
 
         //apply penaltyFee if necessary for classes with minBalance
-        if(checkingAccountRepository.findById(originatorId).isPresent()){
-            CheckingAccount acc = checkingAccountRepository.findById(originatorId).get();
-            acc.verifyPenaltyFee(prevBalanceOriginator, postBalanceOriginator);
-            accountRepository.save(acc);
-        }
-        if(savingsAccountRepository.findById(originatorId).isPresent()){
-            SavingsAccount acc = savingsAccountRepository.findById(originatorId).get();
-            acc.verifyPenaltyFee(prevBalanceOriginator, postBalanceOriginator);
-            accountRepository.save(acc);
-        }
+//        if(checkingAccountRepository.findById(originatorId).isPresent()){
+//            CheckingAccount acc = checkingAccountRepository.findById(originatorId).get();
+//            acc.verifyPenaltyFee(prevBalanceOriginator, postBalanceOriginator);
+//            accountRepository.save(acc);
+//        }
+//        if(savingsAccountRepository.findById(originatorId).isPresent()){
+//            SavingsAccount acc = savingsAccountRepository.findById(originatorId).get();
+//            acc.verifyPenaltyFee(prevBalanceOriginator, postBalanceOriginator);
+//            accountRepository.save(acc);
+//        }
 
         return transaction;
     }
@@ -166,6 +174,7 @@ public class AccountService {
     }
 
     private Boolean verifyFraud(Transaction transaction, Account account) {
+        log.info("Checking for fraudulent activity");
         // Fraud case: >2 transactions within a 1-second period
         boolean isFraudulent = false;
 

@@ -95,9 +95,9 @@ public class AccountHolderService implements AccountHolderServiceInterface {
         return sum;
     }
 
-    public Transaction newTransaction(Authentication user, TransactionDTO transactionDTO) {
-        log.info("Fetching user {} and transaction request", user.getPrincipal());
-        AccountHolder u = (AccountHolder) userRepository.findByUsername(String.valueOf(user.getPrincipal())).get();
+    public Transaction newTransaction(String username, TransactionDTO transactionDTO) {
+        log.info("Fetching user {} and transaction request", username);
+        AccountHolder u = (AccountHolder) userRepository.findByUsername(username).get();
         Optional<Account> originator = accountRepository.findById(transactionDTO.getOriginatorAccountId());
         Optional<Account> receiver = accountRepository.findById(transactionDTO.getReceiverAccountId());
 
@@ -107,8 +107,8 @@ public class AccountHolderService implements AccountHolderServiceInterface {
             //verify user owns originator account
             Long userId = u.getId();
             Long primaryOwnerId = originator.get().getPrimaryOwner().getId();
-            Long secondaryOwnerId = originator.get().getSecondaryOwner().getId();
-            if(Objects.equals(userId, primaryOwnerId) || Objects.equals(userId, secondaryOwnerId)){
+
+            if(primaryOwnerId.equals(userId)){
                 log.info("Ownership of originator account successfully verified.");
                 //verify receiver account owner matches given name
                 if(receiver.get().getPrimaryOwner().getName().equalsIgnoreCase(transactionDTO.getReceiverAccountOwner()) || receiver.get().getSecondaryOwner().getName().equalsIgnoreCase(transactionDTO.getReceiverAccountOwner())){

@@ -299,7 +299,7 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
                 Money balance = new Money(new BigDecimal(initialBalance));
 
                 log.info("Creating new CreditCard of user {}", primary.getName());
-                CreditCard account = new CreditCard(balance, primary, Type.CHECKING);
+                CreditCard account = new CreditCard(balance, primary, Type.CREDIT);
 
                 //check for optional values and set if informed and valid
                 if(accountDTO.getSecondaryOwnerId() != null && userRepository.findUserById(accountDTO.getSecondaryOwnerId()).isPresent() && userRepository.findUserById(userId).get().getClass().getName().equals(className)){

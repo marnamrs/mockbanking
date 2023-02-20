@@ -48,7 +48,15 @@ public class bankingApplication {
              * To generate initial admin:
              * adminService.createUser(new UserDTO({name}, {username}, {password},"ROLE_ADMIN"));
              * */
-
+            adminService.createUser(new UserDTO("Admin", "admin", "1234","ROLE_ADMIN"));
+//            Add accountHolder:
+            AccountHolder owner = adminService.createClient(new UserDTO("User", "user1", "1234", "ROLE_CLIENT","01/01/1900", "Spain", "Barcelona", "Street", 10, 10001, null, null, null, 0, 0));
+            AccountHolder owner2 = adminService.createClient(new UserDTO("User", "user2", "1234", "ROLE_CLIENT", "01/01/2020", "Spain", "Barcelona", "Street", 10, 10001, "Spain", "Madrid", "Street", 99, 90009));
+//            Add thirdParty:
+            adminService.createExternal("External1");
+//            Add checkingAccount:
+            adminService.newCheckingAccount(new AccountDTO(500, owner.getId()));
+            Account accTest = adminService.newCheckingAccount(new AccountDTO(300, owner2.getId()));
 
         };
     }

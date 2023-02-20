@@ -23,7 +23,7 @@ import java.time.temporal.ChronoUnit;
 public class SavingsAccount extends Account{
 
     private String accountKey = setAccountKey();
-    @DecimalMin(value="100")
+
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name="currency", column = @Column(name = "min_balance_currency")),

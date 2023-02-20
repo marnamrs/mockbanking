@@ -23,8 +23,6 @@ import java.time.temporal.ChronoUnit;
 @AllArgsConstructor
 public class CreditCard extends Account {
 
-    @DecimalMin(value="100")
-    @DecimalMax(value="100000")
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name="currency", column = @Column(name = "credit_limit_currency")),

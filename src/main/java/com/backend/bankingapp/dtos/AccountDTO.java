@@ -19,7 +19,7 @@ public class AccountDTO {
     @NotNull
     private Long primaryOwnerId;
     private Long secondaryOwnerId;
-    //savingsAccount can be instantiated with minBalance < default && > 100
+    //savingsAccount can be instantiated with minBalance < 1000(default) && > 100
     private Double minBalance;
     //savingsAccount can be instantiated with intRate between 0-0.5 (default is 0.0025)
     //creditCards can be instantiated with intRate between 0.1-0.2 (default is 0.2)

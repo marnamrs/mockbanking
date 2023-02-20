@@ -5,10 +5,11 @@ Banking REST API project developed with Spring.
 
 This API provides controlled access and basic CRUD operations for user, account and transaction management. 
 
+
+
+![GitHub last commit](https://img.shields.io/github/last-commit/marnamrs/mockbanking)
+
 [Run](#run-locally) | [Authentication](#security) | [API Reference](#api-reference) | [Model Class Diagram](#diagram)
-
-
-
 
 ## Tech Stack
 

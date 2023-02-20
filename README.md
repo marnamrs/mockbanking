@@ -78,6 +78,8 @@ Creation of users and obtention of third party keys can only be executed by user
 
 ## API Reference
 
+Below is a summarized list of endpoints available.
+
 #### Access: Authentication with `ROLE_ADMIN` | Path: api/admin/*
 
 <details>
@@ -174,19 +176,98 @@ Note: access key is generated upon creation of ThirdParty and logged before bein
 | :-------- | :------- | :------------------------- |
 | (RequestBody)  | AccountDTO | **Required**. Check AccountDTO class for details. |
 
+    
+</details>
+
+<details>
+<summary>Other methods</summary>
+<br>
 ```
-  POST /api/admin/accounts/update/balance?accountId={accountId}&amount={amount}
+  PUT /api/admin/accounts/update/balance?accountId={accountId}&amount={amount}
 ```
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
 | `accountId` | `long` | **Required**. Id of item to update. |
 | `amount` | `double` | **Required**. New balance. |
 
+```
+  DELETE /api/admin/users/delete/id?id={id}
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `id` | `string` | **Required**. Id of item to delete |
+    
+    
 </details>
 
 #### Access: Authentication with `ROLE_CLIENT` | Path: api/client/*
 
+<details>
+<summary>GET methods</summary>
+<br>
+
+```
+  GET /api/client/info
+```
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| - | - | Returns information of authenticated user. |
+
+```
+  GET /api/client/accounts
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| -      | - | Returns accounts of authenticated user |
+
+```
+  GET /api/client/accounts/id?id={id}
+```
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `id` | `string` | **Required**. Id of user account to fetch |
+
+```
+  GET /api/client/accounts/balance
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| -      | - | Returns global balance of authenticated user |
+    
+</details>
+
+<details>
+<summary>POST methods</summary>
+<br>
+    
+```
+  POST /api/client/transaction/new
+```
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| (RequestBody)  | TransactionDTO | **Required**. Check TransactionDTO class for details. |    
+
+</details>
+
 #### Access: `access-key` Request Header | Path: api/external/*
+
+
+<details>
+<summary>POST methods</summary>
+<br>
+    
+```
+  POST /api/external/transaction/new
+```
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| (RequestBody)  | ExternalTransactionDTO | **Required**. Check ExternalTransactionDTO class for details. |    
+| (RequestHeader) `access-key`  | String | **Required** |   
+
+</details>
 
 
 ## Diagram

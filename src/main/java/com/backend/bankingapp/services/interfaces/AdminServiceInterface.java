@@ -3,11 +3,9 @@ package com.backend.bankingapp.services.interfaces;
 import com.backend.bankingapp.dtos.AccountDTO;
 import com.backend.bankingapp.dtos.UserDTO;
 import com.backend.bankingapp.models.accounts.Account;
-import com.backend.bankingapp.models.users.AccountHolder;
 import com.backend.bankingapp.models.users.Role;
 import com.backend.bankingapp.models.users.ThirdParty;
 import com.backend.bankingapp.models.users.User;
-import com.backend.bankingapp.models.utils.Money;
 
 import java.util.List;
 
@@ -48,6 +46,6 @@ public interface AdminServiceInterface {
     Account getAccountById(Long id);
     Account getAccountByKey(String key);
 
-    Void deleteUser(Long id);
+    void deleteUser(Long id);
 }
 

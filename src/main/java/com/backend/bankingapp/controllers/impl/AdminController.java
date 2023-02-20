@@ -88,7 +88,8 @@ public class AdminController implements AdminControllerInterface {
     }
 
     @DeleteMapping("/users/delete/id")
-    public Void deleteUser(@RequestParam Long id) {
-        return adminService.deleteUser(id);
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUser(@RequestParam Long id) {
+        adminService.deleteUser(id);
     }
 }

@@ -179,10 +179,27 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
     }
 
     //Delete: Users
-    public Void deleteUser(Long id) {
-        userRepository.deleteById(id);
-        log.info("User {} deleted.", id);
-        return null;
+    public void deleteUser(Long id) {
+        if(userRepository.findUserById(id).isPresent()){
+            User user = userRepository.findUserById(id).get();
+            if(user.getRole().getName().equals("ROLE_CLIENT")){
+                AccountHolder client = (AccountHolder) user;
+                if(client.getPrimaryAccounts().isEmpty() && client.getSecondaryAccounts().isEmpty()){
+
+                    userRepository.deleteById(id);
+                    log.info("User-account holder {} deleted.", id);
+
+                } else {
+                    throw new ResponseStatusException(HttpStatus.NOT_MODIFIED, "Delete user not possible. Existing accounts tied to User. ");
+                }
+            } else {
+                userRepository.deleteById(id);
+                log.info("Non-account holder User {} deleted.", id);
+            }
+
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
     }
 
 

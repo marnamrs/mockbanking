@@ -40,7 +40,7 @@ public interface AdminControllerInterface {
     Account setAccountBalance(Long accountId, double amount);
 
     //DELETE: User
-    Void deleteUser(Long id);
+    void deleteUser(Long id);
 
 
 }

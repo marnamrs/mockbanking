@@ -1,5 +1,5 @@
 package com.backend.bankingapp;
 
-public class ThirdPartyTest {
+public class AccountHolderControllerTest {
     //Test make transfer
 }

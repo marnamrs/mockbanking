@@ -31,3 +31,6 @@ build/
 
 ### SQL ###
 /src/main/resources/application.properties
+
+## Raw ##
+/*.drawio

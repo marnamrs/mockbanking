@@ -23,9 +23,6 @@ import java.time.temporal.ChronoUnit;
 @AllArgsConstructor
 public class CreditCard extends Account {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     @DecimalMin(value="100")
     @DecimalMax(value="100000")
     @Embedded

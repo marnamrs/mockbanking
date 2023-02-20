@@ -21,9 +21,6 @@ import java.time.temporal.ChronoUnit;
 @AllArgsConstructor
 public class CheckingAccount extends Account {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     private String accountKey = setAccountKey();
     @Embedded
     @AttributeOverrides({

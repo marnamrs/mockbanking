@@ -4,7 +4,7 @@ import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.security.crypto.keygen.StringKeyGenerator;
 
 
-public class HashCreator {
+public abstract class HashCreator {
     private static long accountNumber;
     private static int accountNumLength = 8;
 

@@ -20,9 +20,7 @@ import java.time.chrono.ChronoLocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentAccount extends Account{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+
     private String accountKey = setAccountKey();
 
     public StudentAccount(Money balance, AccountHolder primaryOwner, Type type) {

@@ -8,7 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class UserFactory {
+public abstract class UserFactory {
     public static User createUser(UserDTO userDTO, Role role) {
         switch (role.getName()) {
             case "ROLE_ADMIN" -> {

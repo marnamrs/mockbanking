@@ -21,9 +21,7 @@ import java.time.temporal.ChronoUnit;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SavingsAccount extends Account{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+
     private String accountKey = setAccountKey();
     @DecimalMin(value="100")
     @Embedded

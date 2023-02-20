@@ -34,8 +34,22 @@ public class bankingApplication {
     CommandLineRunner run(AdminService adminService) {
         return args -> {
             /*
-            * Run adminService methods (initial Admin User creation, etc.)
-            */
+             * Run adminService methods (initial Admin User creation, etc.)
+             */
+
+            /*
+            * Generation of Basic Roles/Auth.
+            * Changing these roles will require updating securityConfig file
+            * */
+            adminService.saveRole(new Role(null, "ROLE_ADMIN"));
+            adminService.saveRole(new Role(null, "ROLE_CLIENT"));
+            adminService.saveRole(new Role(null, "ROLE_EXTERNAL"));
+            /*
+             * To generate initial admin:
+             * adminService.createUser(new UserDTO({name}, {username}, {password},"ROLE_ADMIN"));
+             * */
+
+
         };
     }
 

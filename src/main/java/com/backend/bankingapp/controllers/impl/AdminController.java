@@ -80,11 +80,15 @@ public class AdminController implements AdminControllerInterface {
         return adminService.newCreditCard(accountDTO);
     }
 
-    //POST: Accounts [Updating]
-    @PostMapping("/accounts/update/balance")
+    //PUT: Accounts [Updating]
+    @PutMapping("/accounts/update/balance")
     @ResponseStatus(HttpStatus.OK)
     public Account setAccountBalance(@RequestParam Long accountId, @RequestParam double amount) {
         return adminService.setBalance(accountId, amount);
     }
 
+    @DeleteMapping("/users/delete/id")
+    public Void deleteUser(@RequestParam Long id) {
+        return adminService.deleteUser(id);
+    }
 }

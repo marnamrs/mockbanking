@@ -178,6 +178,13 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
         return thirdPartyRepository.findAll();
     }
 
+    //Delete: Users
+    public Void deleteUser(Long id) {
+        userRepository.deleteById(id);
+        log.info("User {} deleted.", id);
+        return null;
+    }
+
 
     /*
     [ ACCOUNT MANAGEMENT: POST ]
@@ -319,6 +326,9 @@ public class AdminService implements AdminServiceInterface, UserDetailsService {
     }
 
 
+    /*
+    [ ACCOUNT MANAGEMENT: PUT]
+    */
     //Edit: Balance
     public Account setBalance(Long accountId, double newBalance) {
         if(accountRepository.findAccountById(accountId).isPresent()){

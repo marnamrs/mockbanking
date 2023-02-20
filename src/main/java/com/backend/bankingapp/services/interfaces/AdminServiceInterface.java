@@ -47,5 +47,7 @@ public interface AdminServiceInterface {
     List<Account> getAccounts();
     Account getAccountById(Long id);
     Account getAccountByKey(String key);
+
+    Void deleteUser(Long id);
 }
 

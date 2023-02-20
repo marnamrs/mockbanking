@@ -36,8 +36,11 @@ public interface AdminControllerInterface {
     Account createSavingsAccount(AccountDTO accountDTO);
     Account createCreditCard(AccountDTO accountDTO);
 
-    //POST: Accounts [Updating]
+    //PUT: Accounts [Updating]
     Account setAccountBalance(Long accountId, double amount);
+
+    //DELETE: User
+    Void deleteUser(Long id);
 
 
 }

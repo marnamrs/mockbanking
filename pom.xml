@@ -11,8 +11,8 @@
     <groupId>com.backend</groupId>
     <artifactId>bankingapp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>lab408</name>
-    <description>lab408</description>
+    <name>mockbanking</name>
+    <description>mockbanking</description>
     <properties>
         <java.version>17</java.version>
     </properties>

@@ -44,7 +44,7 @@ spring.datasource.username=(3)
 spring.datasource.password=(4)
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
-spring.jpa.hibernate.ddl-auto=create
+spring.jpa.hibernate.ddl-auto=validate
 server.error.include-stacktrace=never
 
 spring.jpa.show-sql=true
@@ -55,10 +55,7 @@ spring.jpa.show-sql=true
 (3) mysql server user
 (4) mysql server password
 
-After initial build set to validate:
-```
-spring.jpa.hibernate.ddl-auto=validate
-```
+
 
 ## Security
 
